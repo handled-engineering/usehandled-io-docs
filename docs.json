@@ -48,7 +48,7 @@
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Connection API",
         "groups": [
           {
             "group": "API documentation",
@@ -64,6 +64,15 @@
               "api-reference/endpoint/delete",
               "api-reference/endpoint/webhook"
             ]
+          }
+        ]
+      },
+      {
+        "tab": "Unified Commerce API",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": []
           }
         ]
       }
