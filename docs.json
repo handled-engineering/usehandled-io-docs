@@ -30,16 +30,26 @@
           {
             "group": "Getting started",
             "pages": [
-              "index",
-              "quickstart",
+              "get-started-with-handled",
+              "practical-guides",
               "development"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Practical Guides",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "start-here",
+              "",
+              "",
+              {
+                "group": "Creating An Integration",
+                "pages": [
+                  "guides/practical-guides/creating-an-integration/integration-from-api",
+                  "guides/practical-guides/embedded-ui"
+                ]
+              },
+              "guides/practical-guides/bi-directional-data-sync",
+              "guides/practical-guides/data-automations"
             ]
           },
           {
