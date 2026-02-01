@@ -82,10 +82,16 @@
         ]
       },
       {
-        "tab": "Unified Commerce Realtime API",
+        "tab": "Embedded Connect UI",
+        "pages": [
+          "embeded-ui/embedded-ui"
+        ]
+      },
+      {
+        "tab": "Unified Realtime API",
         "groups": [
           {
-            "group": "Overview",
+            "group": "Commerce",
             "pages": [
               "unified-commerce-api/overview/sample-page"
             ]
@@ -93,20 +99,14 @@
         ]
       },
       {
-        "tab": "Unified Commerce Cached API",
+        "tab": "Unified Cached API",
         "groups": [
           {
-            "group": "Overview",
+            "group": "Commerce",
             "pages": [
               "unified-commerce-api/overview-copied-1/sample-page"
             ]
           }
-        ]
-      },
-      {
-        "tab": "Embedded Connect UI",
-        "pages": [
-          "embeded-ui/embedded-ui"
         ]
       }
     ]
