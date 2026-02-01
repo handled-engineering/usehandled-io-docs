@@ -67,11 +67,13 @@
           {
             "group": "API documentation",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/introduction",
+              "connection-api/api-documentation/integrations",
+              "connection-api/api-documentation/api-keys"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Connection API",
             "pages": [
               "api-reference/endpoint/get",
               "api-reference/endpoint/create",
