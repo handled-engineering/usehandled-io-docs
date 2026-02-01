@@ -102,6 +102,12 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Embedded Connect UI",
+        "pages": [
+          "embeded-ui/embedded-ui"
+        ]
       }
     ]
   },
