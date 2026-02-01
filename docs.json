@@ -80,6 +80,13 @@
               "api-reference/endpoint/create-copied-1",
               "api-reference/endpoint/delete"
             ]
+          },
+          {
+            "group": "Integrations API",
+            "pages": [
+              "api-reference/endpoint-copied-1/get",
+              "api-reference/endpoint-copied-1/create-copied-1"
+            ]
           }
         ]
       },
