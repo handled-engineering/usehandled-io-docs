@@ -2,16 +2,19 @@
 title: "Unified Commerce Realtime API"
 ---
 
-**How it works:** When you make an API request, we call the underlying commerce platform in real-time, transform the response into our unified format, and return it to you.
+**How it works:** We proxy your API requests directly to the underlying platform in real-time, translating between our unified format and the platform's native API.
 
 **Best for:**
 
-- Actions that need live data (e.g., checking inventory before checkout)
-- Write operations (e.g., creating orders, updating products)
-- Platforms where you need guaranteed freshness
+- Write operations (creating orders, updating inventory)
+- Use cases requiring guaranteed fresh data
+- Transactional workflows where you need immediate confirmation
+- Developers building apps that pull data from multiple commerce platforms but need it in a single, unified format
+- Passthrough API calls—access the underlying platform's native API directly through Handled when you need platform-specific functionality not covered by our unified model
 
 **Tradeoffs:**
 
-- Latency depends on the underlying platform
-- Subject to rate limits of the source platform
-- Availability tied to source platform uptime
+- Higher latency (depends on the underlying platform's response time)
+- Rate limits inherited from connected platforms
+- More complex error handling (network failures, API limits, etc.)
+- Data is not persisted in Handled—cannot be used to trigger automations on the Handled platform
