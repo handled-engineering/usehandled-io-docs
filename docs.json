@@ -73,7 +73,7 @@
             ]
           },
           {
-            "group": "Account Integrations API",
+            "group": "Connections API",
             "pages": [
               "api-reference/endpoint/get",
               "api-reference/endpoint/create",
