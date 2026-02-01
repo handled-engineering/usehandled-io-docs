@@ -30,17 +30,14 @@
           {
             "group": "Getting started",
             "pages": [
-              "get-started-with-handled",
-              "practical-guides",
-              "development"
+              "get-started-with-handled"
             ]
           },
           {
             "group": "Practical Guides",
             "pages": [
               "start-here",
-              "",
-              "",
+              "guides/practical-guides/creating-an-account",
               {
                 "group": "Creating An Integration",
                 "pages": [
