@@ -82,7 +82,7 @@
         ]
       },
       {
-        "tab": "Unified Commerce API Realtime",
+        "tab": "Unified Commerce Realtime API",
         "groups": [
           {
             "group": "Overview",
@@ -93,7 +93,7 @@
         ]
       },
       {
-        "tab": "Unified Commerce API Cached",
+        "tab": "Unified Commerce Cached API",
         "groups": [
           {
             "group": "Overview",
