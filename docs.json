@@ -82,12 +82,23 @@
         ]
       },
       {
-        "tab": "Unified Commerce API",
+        "tab": "Unified Commerce API Realtime",
         "groups": [
           {
             "group": "Overview",
             "pages": [
               "unified-commerce-api/overview/sample-page"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Unified Commerce API Cached",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "unified-commerce-api/overview-copied-1/sample-page"
             ]
           }
         ]

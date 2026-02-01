@@ -1,0 +1,17 @@
+---
+title: "Unified Commerce API Cached"
+---
+
+**How it works:** We continuously sync data from your connected commerce platforms into our database. When you make an API request, you query our stored data in a unified format.
+
+**Best for:**
+
+- Read-heavy workloads (e.g., product catalogs, order history)
+- Analytics and reporting
+- Building fast UIs where millisecond latency matters
+
+**Tradeoffs:**
+
+- Data freshness depends on sync frequency
+- Write operations still go through Realtime
+- Requires initial sync before data is available
