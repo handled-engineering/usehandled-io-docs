@@ -1,13 +1,13 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "palm",
-  "name": "Mint Starter Kit",
+  "name": "Use Handled",
   "colors": {
     "primary": "#1e90ed",
     "light": "#09b0e4",
     "dark": "#06466e"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/images/Iso_1.png",
   "navigation": {
     "global": {
       "anchors": [
@@ -129,5 +129,6 @@
       "github": "https://github.com/mintlify",
       "linkedin": "https://linkedin.com/company/mintlify"
     }
-  }
+  },
+  "description": "Handled iPaaS Solution"
 }
