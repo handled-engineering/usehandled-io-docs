@@ -1,15 +1,17 @@
 ---
-title: "Unified Commerce API Realtime"
+title: "Unified Commerce Realtime API"
 ---
 
 **How it works:** When you make an API request, we call the underlying commerce platform in real-time, transform the response into our unified format, and return it to you.
 
 **Best for:**
+
 - Actions that need live data (e.g., checking inventory before checkout)
 - Write operations (e.g., creating orders, updating products)
 - Platforms where you need guaranteed freshness
 
 **Tradeoffs:**
+
 - Latency depends on the underlying platform
 - Subject to rate limits of the source platform
 - Availability tied to source platform uptime
