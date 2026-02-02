@@ -102,8 +102,13 @@
           {
             "group": "Commerce",
             "pages": [
+              "unified-realtime-api/commerce/api",
               "unified-commerce-api/overview/sample-page"
             ]
+          },
+          {
+            "group": "API Reference",
+            "openapi": "realtime-api.json" 
           }
         ]
       },
