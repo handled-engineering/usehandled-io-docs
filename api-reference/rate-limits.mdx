@@ -1,0 +1,69 @@
+---
+title: "Rate Limits"
+description: "Understanding and handling API rate limits"
+---
+
+## Response Headers
+
+When you make API requests, these headers show your rate limit status:
+
+| Header | Description |
+|--------|-------------|
+| `ratelimit-limit` | Maximum requests allowed in the current window |
+| `ratelimit-remaining` | Requests remaining in the current window |
+| `ratelimit-reset` | Seconds until the window resets |
+
+## Example Response Headers
+
+```
+ratelimit-limit: 100;w=60
+ratelimit-remaining: 95
+ratelimit-reset: 45
+```
+
+This means:
+- 100 requests allowed per 60 seconds
+- 95 requests remaining
+- Window resets in 45 seconds
+
+## Handling Rate Limits
+
+When you exceed the rate limit, you receive a `429 Too Many Requests` response.
+
+**Best practices:**
+
+<Steps>
+  <Step title="Check Headers">
+    Check `ratelimit-remaining` before making requests
+  </Step>
+  <Step title="Wait on 429">
+    When you receive a 429, wait for `ratelimit-reset` seconds
+  </Step>
+  <Step title="Implement Backoff">
+    Implement exponential backoff for retries
+  </Step>
+</Steps>
+
+## Retry Strategy
+
+```javascript
+async function fetchWithRetry(url, options, maxRetries = 3) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    const response = await fetch(url, options);
+
+    if (response.status === 429) {
+      const resetAfter = parseInt(response.headers.get('ratelimit-reset') || '5');
+      console.log(`Rate limited. Waiting ${resetAfter} seconds...`);
+      await new Promise(resolve => setTimeout(resolve, resetAfter * 1000));
+      continue;
+    }
+
+    return response;
+  }
+  throw new Error('Max retries exceeded');
+}
+```
+
+<Note>
+Rate limit headers appear only when the underlying API provides rate limit information. Some integrations may not include these headers.
+</Note>

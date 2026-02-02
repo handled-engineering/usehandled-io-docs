@@ -1,0 +1,71 @@
+---
+title: "RapidForm Field Types"
+description: "Available field types and their options"
+---
+
+## Single Select
+
+Dropdown with one option.
+
+| Option | Description |
+|--------|-------------|
+| Label Attribute | Field to display |
+| Value Attribute | Field to store |
+| Enable Search | Allow filtering options |
+| Enable Auto Pagination | Load more on scroll |
+
+## Multi Select
+
+Multiple selections allowed.
+
+| Option | Description |
+|--------|-------------|
+| Allow Select All | Button to select everything |
+| High Cardinality | Optimize for 1000+ options |
+| Search on Frontend | Filter loaded options only |
+
+## Text
+
+Single-line text input.
+
+| Option | Description |
+|--------|-------------|
+| Name | Variable name |
+| Label | Display text |
+| Help Text | Description |
+| Required | Must be filled |
+
+## Password
+
+Masked input for sensitive values.
+
+Same options as Text. Value is hidden when displayed.
+
+## Checkbox
+
+Boolean toggle.
+
+| Option | Description |
+|--------|-------------|
+| Name | Variable name |
+| Label | Display text |
+| Required | Must be checked |
+
+## Hidden
+
+Store values without showing to users.
+
+Use cases:
+- Default values
+- Computed values from other fields
+- API responses needed later
+
+| Option | Description |
+|--------|-------------|
+| Name | Variable name |
+| Data Source | API to fetch value |
+| Query | Filter parameters |
+
+## Field Order
+
+Use arrow controls to reorder fields. Order determines display sequence in the form.

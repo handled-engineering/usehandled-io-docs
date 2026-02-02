@@ -1,0 +1,58 @@
+---
+title: "Setting Up Connection Validation"
+description: "Verify that connected accounts have valid credentials and permissions"
+---
+
+## Why Validate
+
+Without validation, users can connect accounts that:
+- Have invalid API keys
+- Lack required permissions
+- Can't access needed resources
+
+Validation catches these issues during connection, not during production API calls.
+
+## Enable Validation
+
+<Steps>
+  <Step title="Open Settings">
+    Go to your integration settings
+  </Step>
+  <Step title="Enable">
+    Enable **Connection Validation**
+  </Step>
+</Steps>
+
+## Configure Validation
+
+### Select Data Source
+
+| Field | Description |
+|-------|-------------|
+| Request Type | Unified API or Proxy API |
+| Resource | Endpoint to test (e.g., `wms/orders`) |
+| Method | `list` or `get` |
+| Query | Optional filter parameters |
+
+### How It Works
+
+During connection, Handled makes the configured API call:
+- **Success** - Account is validated and activated
+- **Failure** - User sees an error and can fix their credentials
+
+## Example
+
+For a ShipHero integration:
+
+| Setting | Value |
+|---------|-------|
+| Request Type | Unified API |
+| Resource | `wms/orders` |
+| Method | `list` |
+| Query | `{"limit": 1}` |
+
+This verifies the user can access orders before completing the connection.
+
+<Note>
+Choose a lightweight endpoint for validation to keep connection times fast.
+</Note>

@@ -1,0 +1,62 @@
+---
+title: "Creating Webhooks via UI"
+description: "Set up webhooks through the Handled dashboard"
+---
+
+## Create a Webhook
+
+<Steps>
+  <Step title="Open Webhooks">
+    Go to **Webhooks** in the dashboard
+  </Step>
+  <Step title="Create New">
+    Click **Create Webhook**
+  </Step>
+  <Step title="Configure">
+    Configure:
+    - **Endpoint** - Your HTTPS URL
+    - **Environment** - Development, Staging, or Production
+    - **Active** - Whether to send events immediately
+    - **Events** - Which event types to receive
+  </Step>
+  <Step title="Save">
+    Click **Create Webhook**
+  </Step>
+</Steps>
+
+## Event Types
+
+Select specific events or "all" for everything:
+
+### Account Events
+- `integrated_account:created`
+- `integrated_account:active`
+- `integrated_account:updated`
+
+### Sync Events
+- `sync_job_run:started`
+- `sync_job_run:completed`
+- `sync_job_run:failed`
+- `sync_job_run:record`
+
+### Record Events
+- `record:created`
+- `record:updated`
+- `record:deleted`
+
+## Test Your Webhook
+
+<Steps>
+  <Step title="Find Webhook">
+    Find your webhook in the list
+  </Step>
+  <Step title="Open Menu">
+    Click the three-dot menu
+  </Step>
+  <Step title="Send Test">
+    Select **Send Test Event**
+  </Step>
+  <Step title="Verify">
+    Check that your endpoint received the test payload
+  </Step>
+</Steps>

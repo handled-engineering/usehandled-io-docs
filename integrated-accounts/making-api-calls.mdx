@@ -1,0 +1,79 @@
+---
+title: "Making API Calls"
+description: "Access data from connected accounts using Unified or Proxy APIs"
+---
+
+## Unified API
+
+Standardized data format across all integrations.
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/unified/wms/orders?integrated_account_id=ACCOUNT_ID' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Proxy API
+
+Raw data from the underlying service.
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/proxy/orders?integrated_account_id=ACCOUNT_ID' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Common Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| `integrated_account_id` | The connected account to query |
+| `limit` | Number of records to return |
+| `next_cursor` | Pagination token |
+
+## Via Dashboard
+
+<Steps>
+  <Step title="Open Account">
+    Go to **Integrated Accounts** and select an account
+  </Step>
+  <Step title="Choose API Type">
+    Choose **Unified API** or **Proxy API**
+  </Step>
+  <Step title="Select Resource">
+    Select a resource
+  </Step>
+  <Step title="Call API">
+    Click **Call API**
+  </Step>
+</Steps>
+
+## Writing Data
+
+Create and update records through Unified APIs.
+
+### Get Required Fields
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/unified/wms/orders/meta/create?integrated_account_id=ACCOUNT_ID' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+### Create a Record
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/unified/wms/orders?integrated_account_id=ACCOUNT_ID' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name": "Order 123",
+    "line_items": [...]
+  }'
+```
+
+## Show Raw Data
+
+Include the original response alongside unified data:
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/unified/wms/orders?integrated_account_id=ACCOUNT_ID&show_remote_data=true' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```

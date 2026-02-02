@@ -1,0 +1,52 @@
+---
+title: "Deleting Accounts"
+description: "Remove a connected account permanently"
+---
+
+## What Gets Deleted
+
+- The account connection
+- All stored variables
+- API logs for that account
+
+<Warning>
+This action cannot be undone.
+</Warning>
+
+## Delete via Dashboard
+
+<Steps>
+  <Step title="Open Account">
+    Go to **Integrated Accounts** and select the account
+  </Step>
+  <Step title="Delete">
+    Click **Delete integrated account**
+  </Step>
+  <Step title="Confirm">
+    Confirm deletion
+  </Step>
+</Steps>
+
+## Delete via API
+
+```bash
+curl -X DELETE 'https://api.usehandled.io/api/v1/ipaas/integrated-account/ACCOUNT_ID' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Before Deleting
+
+<CardGroup cols={2}>
+  <Card title="Export Data" icon="download">
+    Export any data you need to keep
+  </Card>
+  <Card title="Stop Sync Jobs" icon="stop">
+    Stop any sync jobs using this account
+  </Card>
+  <Card title="Update Application" icon="code">
+    Update your application to handle the missing account
+  </Card>
+  <Card title="Notify Users" icon="bell">
+    Notify affected users about the disconnection
+  </Card>
+</CardGroup>

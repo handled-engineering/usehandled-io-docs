@@ -1,0 +1,61 @@
+---
+title: "Working with Real-Time APIs"
+description: "Important considerations when using Handled's real-time Unified APIs"
+---
+
+## Rate Limits
+
+Each underlying service has its own rate limits. Shopify allows different request volumes than Amazon or FedEx.
+
+**Your responsibility:**
+- Monitor rate limit headers in responses
+- Implement backoff when limits are reached
+- Design your sync frequency around platform limits
+
+**Handled helps by:**
+- Normalizing rate limit headers across all services
+- Providing consistent `ratelimit-remaining` and `ratelimit-reset` values
+- Managing rate limits automatically in RapidBridge sync jobs
+
+## Filter Support
+
+Not every service supports every filter. For example:
+- ShipHero may support filtering orders by status
+- Another WMS might not support that parameter
+
+**How to handle this:**
+- Use the `/meta` endpoint to discover supported filters per integration
+- Unsupported filters are ignored (not errors)
+- Test filters against each integration you use
+
+```bash
+# Check what filters are supported for an integration
+curl 'https://api.usehandled.io/api/v1/ipaas/unified/wms/orders/meta?integrated_account_id=ACCOUNT_ID' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Data Freshness
+
+Real-time means current data, but also means:
+- Each request hits the underlying service
+- Response times depend on the service's speed
+- Network issues affect availability
+
+**Best practices:**
+- Cache responses on your end when appropriate
+- Use sync jobs for bulk data needs
+- Reserve real-time calls for on-demand operations
+
+## Schema Differences
+
+Unified APIs normalize data, but some platform-specific fields exist only in certain integrations.
+
+**Accessing raw data:**
+- Enable `show_remote_data=true` to see original response alongside unified format
+- Use Proxy APIs when you need full access to platform-specific fields
+
+```bash
+# Include raw response from the underlying service
+curl 'https://api.usehandled.io/api/v1/ipaas/unified/wms/orders?integrated_account_id=ACCOUNT_ID&show_remote_data=true' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```

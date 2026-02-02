@@ -1,0 +1,66 @@
+---
+title: "What Are Unified APIs?"
+description: "A single, standardized interface across all integrations"
+---
+
+## Overview
+
+Unified APIs provide a single, standardized interface across all integrations. Instead of learning different APIs for Shopify, Amazon, ShipHero, and FedEx, you use one consistent API format.
+
+## The Problem They Solve
+
+Without Unified APIs, you need to handle:
+- Different data formats ("order" vs "purchase" vs "transaction")
+- Various authentication methods per service
+- Unique error responses from each platform
+- Multiple pagination styles
+
+## How Unified APIs Work
+
+### Data Normalization
+
+All integrations return data in the same format:
+
+```json
+// Shopify order, Amazon order, or Walmart order - same structure
+{
+  "id": "order_123",
+  "status": "fulfilled",
+  "line_items": [...],
+  "shipping_address": {...}
+}
+```
+
+### Standard Operations
+
+Every resource supports the same methods:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| List | `GET /unified/{category}/{resource}` | List records |
+| Get | `GET /unified/{category}/{resource}/{id}` | Get single record |
+| Create | `POST /unified/{category}/{resource}` | Create record |
+| Update | `PUT /unified/{category}/{resource}/{id}` | Update record |
+| Delete | `DELETE /unified/{category}/{resource}/{id}` | Delete record |
+
+## Real-Time Access
+
+Unified APIs fetch data directly from the source. No caching means:
+- Data is always current
+- No sync delays
+- No stale inventory counts
+
+## When to Use Unified vs Proxy APIs
+
+<CardGroup cols={2}>
+  <Card title="Use Unified APIs when:" icon="layer-group">
+    - You need consistent data across integrations
+    - Building features that work with multiple platforms
+    - Data format matters more than platform-specific fields
+  </Card>
+  <Card title="Use Proxy APIs when:" icon="arrow-right-arrow-left">
+    - You need platform-specific features
+    - Accessing fields not in the unified schema
+    - Building integration-specific functionality
+  </Card>
+</CardGroup>

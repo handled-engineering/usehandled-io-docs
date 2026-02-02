@@ -1,0 +1,87 @@
+---
+title: "Custom Validation"
+description: "Add complex validation rules using JSONata expressions"
+---
+
+## Enable Validation
+
+<Steps>
+  <Step title="Add Fields">
+    Add your form fields
+  </Step>
+  <Step title="Enable">
+    Toggle **Custom Validation**
+  </Step>
+</Steps>
+
+## Write Validation Expression
+
+The expression receives all form data and returns:
+- `undefined` if valid
+- Array of error objects if invalid
+
+### Example: Minimum Selection
+
+Require at least 5 projects:
+
+```jsonata
+($exists(projects) and $count(projects) >= 5)
+? undefined
+: [{"field": "projects", "message": "Select at least 5 projects"}]
+```
+
+### Example: Required Together
+
+If warehouse is selected, region must be too:
+
+```jsonata
+($exists(warehouse_id) and not $exists(region_id))
+? [{"field": "region_id", "message": "Region is required when warehouse is selected"}]
+: undefined
+```
+
+## Error Object Format
+
+```json
+{
+  "field": "field_name",
+  "message": "Error message shown to user"
+}
+```
+
+## Testing Validation
+
+<Steps>
+  <Step title="Enter Test Data">
+    Enter example input data
+  </Step>
+  <Step title="Write Expression">
+    Write your expression
+  </Step>
+  <Step title="View Output">
+    View the output
+  </Step>
+  <Step title="Verify">
+    Verify errors appear for invalid data
+  </Step>
+</Steps>
+
+### Example Input
+
+```json
+{
+  "warehouse_id": "wh-123",
+  "projects": [
+    {"value": "1"},
+    {"value": "2"}
+  ]
+}
+```
+
+### Example Output (invalid)
+
+```json
+[
+  {"field": "projects", "message": "Select at least 5 projects"}
+]
+```

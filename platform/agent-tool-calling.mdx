@@ -1,0 +1,82 @@
+---
+title: "Agent Tool Calling"
+description: "Expose Handled resources as tools for LLM frameworks"
+---
+
+## What This Does
+
+Handled can provide tool definitions that LLMs use to access your integrated data. When an AI agent needs to fetch orders or check inventory, it calls Handled tools.
+
+## Supported Frameworks
+
+- Langchain.js via `@handled/langchainjs-toolset`
+- Other frameworks available on request
+
+## How It Works
+
+1. Each integration has resources (orders, inventory, etc.)
+2. Resources become tool definitions
+3. LLMs call these tools to fetch data
+4. Tools use Proxy APIs to get real-time data
+
+## Get Tool Definitions
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/integrated-account/ACCOUNT_ID/tools' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+### Filter by Method Type
+
+```
+?methods[0]=read&methods[1]=custom
+```
+
+## Customize Tools
+
+Add descriptions and schemas to improve LLM understanding:
+
+<Steps>
+  <Step title="Open Integration">
+    Go to your integration
+  </Step>
+  <Step title="Edit">
+    Click **Edit**
+  </Step>
+  <Step title="Expand Resource">
+    Expand a resource and method
+  </Step>
+  <Step title="Add Description">
+    Add a **Method Description**
+  </Step>
+  <Step title="Define Schema">
+    Define **Query Schema** for accepted parameters
+  </Step>
+  <Step title="Save">
+    Save
+  </Step>
+</Steps>
+
+Changes apply immediately to tool definitions.
+
+## Example Tool Definition
+
+```json
+{
+  "name": "list_orders",
+  "description": "Fetch orders from the WMS",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "string",
+        "description": "Filter by order status"
+      },
+      "limit": {
+        "type": "number",
+        "description": "Maximum results to return"
+      }
+    }
+  }
+}
+```

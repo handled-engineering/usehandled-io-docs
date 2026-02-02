@@ -1,0 +1,73 @@
+---
+title: "Authentication"
+description: "Authenticate API requests with Bearer tokens"
+---
+
+## Bearer Token
+
+All API requests require a Bearer token in the `Authorization` header:
+
+```
+Authorization: Bearer <your-api-token>
+```
+
+## Getting Your Token
+
+<Steps>
+  <Step title="Log In">
+    Log into your [Handled dashboard](https://app.handled.one)
+  </Step>
+  <Step title="Navigate to Settings">
+    Go to **Settings > API Tokens**
+  </Step>
+  <Step title="Create Token">
+    Click **Create API Token**
+  </Step>
+  <Step title="Copy Token">
+    Copy and store the token securely
+  </Step>
+</Steps>
+
+<Warning>
+The token is only shown once. Make sure to copy it before closing the dialog.
+</Warning>
+
+## Example Request
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/integrated-accounts' \
+  -H 'Authorization: Bearer sk_live_abc123...' \
+  -H 'Content-Type: application/json'
+```
+
+## Security Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Keep Tokens Secret" icon="lock">
+    Anyone with your token can access your account. Never commit tokens to version control.
+  </Card>
+  <Card title="Use HTTPS" icon="shield">
+    All requests must use HTTPS. HTTP requests are rejected.
+  </Card>
+  <Card title="Separate Environments" icon="layer-group">
+    Create separate tokens for development, staging, and production.
+  </Card>
+  <Card title="Rotate Regularly" icon="rotate">
+    Periodically rotate tokens for enhanced security.
+  </Card>
+</CardGroup>
+
+## Environment Variables
+
+Store your token in an environment variable:
+
+```bash
+export HANDLED_API_TOKEN="sk_live_abc123..."
+```
+
+Then use it in your requests:
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/integrated-accounts' \
+  -H "Authorization: Bearer $HANDLED_API_TOKEN"
+```

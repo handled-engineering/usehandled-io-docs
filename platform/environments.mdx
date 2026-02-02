@@ -1,0 +1,56 @@
+---
+title: "Environments"
+description: "Separate workspaces for different stages of development"
+---
+
+## Available Environments
+
+| Environment | Purpose |
+|-------------|---------|
+| Development | Building and testing |
+| Staging | Pre-production validation |
+| Production | Live operations |
+
+## Isolation
+
+Each environment is completely separate:
+
+### API Tokens
+
+Tokens created in staging don't work in production. Create separate tokens for each environment.
+
+### Integrated Accounts
+
+Accounts connected in development aren't visible in production. Connect accounts separately per environment.
+
+### Integrations
+
+Install and configure integrations independently in each environment.
+
+## Use Cases
+
+<CardGroup cols={3}>
+  <Card title="Development" icon="wrench">
+    - Test new integrations
+    - Build features safely
+    - Use test accounts
+  </Card>
+  <Card title="Staging" icon="flask">
+    - Validate before going live
+    - Test with production-like data
+    - Final QA checks
+  </Card>
+  <Card title="Production" icon="rocket">
+    - Live customer connections
+    - Real data operations
+    - Business-critical workflows
+  </Card>
+</CardGroup>
+
+## Best Practices
+
+<Warning>
+- Never use production tokens in development
+- Test integrations in staging before production
+- Keep environments isolated
+</Warning>

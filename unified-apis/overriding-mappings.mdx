@@ -1,0 +1,110 @@
+---
+title: "Overriding Unified API Mappings"
+description: "Customize how data is transformed for specific accounts or environments"
+---
+
+## Override Levels
+
+| Level | Scope |
+|-------|-------|
+| **Environment Level** | Applies to all accounts using an integration in an environment |
+| **Integrated Account Level** | Applies to a specific connected account |
+
+<Note>
+Account-level overrides take precedence over environment-level.
+</Note>
+
+## Override at Integrated Account Level
+
+### Via API
+
+```bash
+curl -X PATCH 'https://api.usehandled.io/api/v1/ipaas/integrated-account/{id}' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "unified_model_override": {
+      "wms": {
+        "orders": {
+          "list": {
+            "query_mapping": "{ \"warehouse_id\": query.location_id }",
+            "response_mapping": "{ \"location\": response.warehouse_name }"
+          }
+        }
+      }
+    }
+  }'
+```
+
+### Structure
+
+```yaml
+unified_model_override:
+  {unified_api_name}:
+    {resource}:
+      {method}:
+        query_mapping: "JSONata expression"
+        response_mapping: "JSONata expression"
+```
+
+## Override at Environment Level
+
+### Via UI
+
+<Steps>
+  <Step title="Open Unified API">
+    Go to **Installed Unified API > Mapping**
+  </Step>
+  <Step title="Select Integration">
+    Select the integration
+  </Step>
+  <Step title="Edit Mapping">
+    Click the edit icon next to the method
+  </Step>
+  <Step title="Modify">
+    Modify mappings (Query, Response, Error, Headers)
+  </Step>
+  <Step title="Save">
+    Save changes
+  </Step>
+</Steps>
+
+### Via API
+
+```bash
+# Get the installed unified model ID
+curl 'https://api.usehandled.io/api/v1/ipaas/environment-unified-model?unified_model.name=wms' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+
+# Apply override
+curl -X PATCH 'https://api.usehandled.io/api/v1/ipaas/environment-unified-model/{id}' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "override": {
+      "resources": {
+        "orders": {
+          "integration_mapping": {
+            "shiphero": {
+              "list": {
+                "response_mapping": "{ \"custom_field\": response.extra_data }"
+              }
+            }
+          }
+        }
+      }
+    }
+  }'
+```
+
+## Available Bindings
+
+Use these in your JSONata expressions:
+
+| Binding | Description |
+|---------|-------------|
+| `response` | Raw API response |
+| `query` | Mapped query parameters |
+| `rawQuery` | Original query parameters |
+| `body` | Request body |
+| `context` | Account variables |

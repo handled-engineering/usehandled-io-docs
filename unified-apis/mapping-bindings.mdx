@@ -1,0 +1,120 @@
+---
+title: "JSONata Bindings Reference"
+description: "Bindings provide access to request and response data in mapping expressions"
+---
+
+## Query Mapping Bindings
+
+| Binding | Description |
+|---------|-------------|
+| `query` | Query parameters from the request |
+| `body` | Request body |
+| `context` | Account variables |
+| `before` | Results from before steps |
+| `id` | Resource ID from URL |
+
+**Example:**
+```jsonata
+{
+  "warehouse_id": query.location_id,
+  "limit": query.page_size
+}
+```
+
+## Body Mapping Bindings
+
+| Binding | Description |
+|---------|-------------|
+| `body` | Request body |
+| `query` | Mapped query parameters |
+| `rawQuery` | Original query parameters |
+| `context` | Account variables |
+| `before` | Results from before steps |
+
+**Example:**
+```jsonata
+{
+  "order_name": body.name,
+  "customer_email": body.customer.email
+}
+```
+
+## Response Mapping Bindings
+
+| Binding | Description |
+|---------|-------------|
+| `response` | Raw API response |
+| `query` | Mapped query parameters |
+| `rawQuery` | Original query parameters |
+| `body` | Request body |
+| `context` | Account variables |
+| `headers` | Response headers |
+
+**Example:**
+```jsonata
+{
+  "id": response.order_id,
+  "status": $lowercase(response.order_status),
+  "items": response.line_items.{
+    "sku": sku,
+    "quantity": qty
+  }
+}
+```
+
+## Header Mapping Bindings
+
+| Binding | Description |
+|---------|-------------|
+| `headers` | HTTP headers |
+| `query` | Mapped query parameters |
+| `body` | Request body |
+| `context` | Account variables |
+
+## Error Mapping Bindings
+
+| Binding | Description |
+|---------|-------------|
+| `error` | Error details |
+| `headers` | Response headers |
+| `body` | Request body |
+| `query` | Mapped query parameters |
+| `context` | Account variables |
+
+## Before/After Step Bindings
+
+| Binding | Description |
+|---------|-------------|
+| `id` | Resource ID |
+| `query` | Mapped query parameters |
+| `body` | Request body |
+| `context` | Account variables |
+| `step` | Current step info |
+
+## Practical Example
+
+**Query mapping:**
+```jsonata
+{ "person_id": query.contact.id }
+```
+
+**Response mapping using the mapped value:**
+```jsonata
+{
+  "contact": {
+    "id": query.person_id,
+    "name": response.full_name
+  }
+}
+```
+
+## Common JSONata Functions
+
+| Function | Description | Example |
+|----------|-------------|---------|
+| `$lowercase()` | Convert to lowercase | `$lowercase(status)` |
+| `$uppercase()` | Convert to uppercase | `$uppercase(code)` |
+| `$now()` | Current timestamp | `$now()` |
+| `$count()` | Count array items | `$count(items)` |
+| `$sum()` | Sum numbers | `$sum(items.price)` |
+| `$merge()` | Combine objects | `$merge([a, b])` |

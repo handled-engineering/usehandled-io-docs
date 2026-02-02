@@ -1,0 +1,73 @@
+---
+title: "Pagination"
+description: "Navigate through large result sets with cursor-based pagination"
+---
+
+## How It Works
+
+List endpoints return paginated results using cursor-based pagination.
+
+## Response Format
+
+```json
+{
+  "result": [
+    {"id": "1", "name": "Item 1"},
+    {"id": "2", "name": "Item 2"}
+  ],
+  "next_cursor": "abc123"
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `result` | Array of resources |
+| `next_cursor` | Token for the next page. `null` when no more pages exist. |
+
+## Fetching Pages
+
+**First request:**
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/unified/crm/contacts?integrated_account_id=ACCOUNT_ID' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+**Next page:**
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/unified/crm/contacts?integrated_account_id=ACCOUNT_ID&next_cursor=abc123' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Limiting Results
+
+Use the `limit` parameter to control page size:
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/unified/crm/contacts?integrated_account_id=ACCOUNT_ID&limit=50' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Example: Fetching All Records
+
+```javascript
+async function fetchAllRecords(accountId) {
+  const records = [];
+  let cursor = null;
+
+  do {
+    const url = new URL('https://api.usehandled.io/api/v1/ipaas/unified/crm/contacts');
+    url.searchParams.set('integrated_account_id', accountId);
+    if (cursor) url.searchParams.set('next_cursor', cursor);
+
+    const response = await fetch(url, {
+      headers: { 'Authorization': `Bearer ${API_TOKEN}` }
+    });
+    const data = await response.json();
+
+    records.push(...data.result);
+    cursor = data.next_cursor;
+  } while (cursor);
+
+  return records;
+}
+```

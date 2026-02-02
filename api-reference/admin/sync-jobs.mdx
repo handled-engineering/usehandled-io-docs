@@ -1,0 +1,86 @@
+---
+title: "Sync Jobs API"
+description: "Create and manage sync jobs programmatically"
+---
+
+## Create Sync Job
+
+Define which resources to synchronize.
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/sync-job' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "integration_name": "shiphero",
+    "resources": [
+      {"resource": "wms/orders", "method": "list"},
+      {"resource": "wms/inventory", "method": "list"}
+    ]
+  }'
+```
+
+### Resource Configuration
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `resource` | string | Unified or Proxy API resource |
+| `method` | string | `list`, `get`, or custom method |
+| `depends_on` | string | Parent resource for hierarchical data |
+| `query` | object | Filter parameters |
+
+## Run Sync Job
+
+Execute a sync job for a specific account.
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/sync-job-run' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "sync_job_id": "job_123",
+    "integrated_account_id": "acc_456",
+    "webhook_id": "webhook_789"
+  }'
+```
+
+## Create Scheduled Sync
+
+Set up recurring syncs using cron expressions.
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/sync-job-cron-trigger' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "sync_job_id": "job_123",
+    "integrated_account_id": "acc_456",
+    "webhook_id": "webhook_789",
+    "cron_expression": "0 */6 * * *"
+  }'
+```
+
+<Note>
+Cron expressions use UTC timezone.
+</Note>
+
+## List Sync Jobs
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/sync-job' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Get Sync Job Run Status
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/sync-job-run/{run_id}' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Delete Sync Job
+
+```bash
+curl -X DELETE 'https://api.usehandled.io/api/v1/ipaas/sync-job/{job_id}' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```

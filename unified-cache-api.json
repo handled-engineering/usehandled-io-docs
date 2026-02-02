@@ -1,0 +1,981 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Handled Unified Cache API",
+    "description": "Access cached data from connected accounts for faster bulk operations. Data is synchronized periodically, enabling fast queries without hitting underlying service rate limits.",
+    "version": "1.0.0",
+    "contact": {
+      "email": "support@usehandled.io"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.usehandled.io/api/v1/ipaas/unified_cache",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/orders": {
+      "get": {
+        "summary": "List Orders",
+        "description": "Retrieve cached customer purchases with complete details including line items, pricing, shipping, and financial data.",
+        "operationId": "listOrders",
+        "tags": ["Orders"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderListResponse"
+                }
+              }
+            }
+          },
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "429": {"$ref": "#/components/responses/RateLimited"}
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "summary": "Get Order",
+        "description": "Retrieve a single cached order by ID.",
+        "operationId": "getOrder",
+        "tags": ["Orders"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/resource_id"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "404": {"$ref": "#/components/responses/NotFound"}
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "summary": "List Products",
+        "description": "Retrieve cached product catalog containing SKUs, descriptions, pricing, dimensions, and attributes synced across channels.",
+        "operationId": "listProducts",
+        "tags": ["Products"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "summary": "Get Product",
+        "description": "Retrieve a single cached product by ID.",
+        "operationId": "getProduct",
+        "tags": ["Products"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/resource_id"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/inventory": {
+      "get": {
+        "summary": "List Inventory",
+        "description": "Retrieve cached stock level data tracking product quantities across warehouses, sales channels, and fulfillment centers.",
+        "operationId": "listInventory",
+        "tags": ["Inventory"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InventoryListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/inventory_rules": {
+      "get": {
+        "summary": "List Inventory Rules",
+        "description": "Retrieve cached logic and configurations governing inventory management, allocation, and synchronization including safety stock and priorities.",
+        "operationId": "listInventoryRules",
+        "tags": ["Inventory"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/customers": {
+      "get": {
+        "summary": "List Customers",
+        "description": "Retrieve cached customer account records containing buyer information, preferences, catalogs, payment terms, and purchase history.",
+        "operationId": "listCustomers",
+        "tags": ["Customers"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "get": {
+        "summary": "Get Customer",
+        "description": "Retrieve a single cached customer by ID.",
+        "operationId": "getCustomer",
+        "tags": ["Customers"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/resource_id"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts": {
+      "get": {
+        "summary": "List Contacts",
+        "description": "Retrieve cached individual contact records associated with customers or companies, used for CRM synchronization and communication.",
+        "operationId": "listContacts",
+        "tags": ["Customers"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/fulfillment_orders": {
+      "get": {
+        "summary": "List Fulfillment Orders",
+        "description": "Retrieve cached order allocations to specific locations/fulfillment partners created by the Order Routing Engine, with possible splits across locations.",
+        "operationId": "listFulfillmentOrders",
+        "tags": ["Fulfillment"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FulfillmentOrderListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fulfillment_shipments": {
+      "get": {
+        "summary": "List Fulfillment Shipments",
+        "description": "Retrieve cached immutable records from fulfillment channels when orders ship, containing carrier info, tracking numbers, and shipping confirmations for each package.",
+        "operationId": "listFulfillmentShipments",
+        "tags": ["Fulfillment"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FulfillmentShipmentListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/fulfillment_network_transfers": {
+      "get": {
+        "summary": "List Fulfillment Network Transfers",
+        "description": "Retrieve cached inventory transfer orders moving stock between locations within a fulfillment network, tracked through completion.",
+        "operationId": "listFulfillmentNetworkTransfers",
+        "tags": ["Fulfillment"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/returns": {
+      "get": {
+        "summary": "List Returns",
+        "description": "Retrieve cached Return Merchandise Authorizations (RMAs) and return requests initiated by customers flowing to warehouses for processing.",
+        "operationId": "listReturns",
+        "tags": ["Returns & Refunds"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReturnListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refunds": {
+      "get": {
+        "summary": "List Refunds",
+        "description": "Retrieve cached records of approved refunds processed through return management systems, triggering credits and ERP reconciliation.",
+        "operationId": "listRefunds",
+        "tags": ["Returns & Refunds"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefundListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trackings": {
+      "get": {
+        "summary": "List Trackings",
+        "description": "Retrieve cached shipment tracking information including carrier, tracking numbers, and delivery status flowing back to selling channels.",
+        "operationId": "listTrackings",
+        "tags": ["Shipping"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrackingListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/labels": {
+      "get": {
+        "summary": "List Labels",
+        "description": "Retrieve cached shipping labels with carrier, regulatory, and handling instructions generated for shipments.",
+        "operationId": "listLabels",
+        "tags": ["Shipping"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/shipping_methods": {
+      "get": {
+        "summary": "List Shipping Methods",
+        "description": "Retrieve cached carrier service mappings between different systems ensuring consistent shipping speed promises across platforms.",
+        "operationId": "listShippingMethods",
+        "tags": ["Shipping"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/shipment_boxes": {
+      "get": {
+        "summary": "List Shipment Boxes",
+        "description": "Retrieve cached cartonization data representing how items are packed into boxes with dimensions, weights, and contents for each package.",
+        "operationId": "listShipmentBoxes",
+        "tags": ["Shipping"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/locations": {
+      "get": {
+        "summary": "List Locations",
+        "description": "Retrieve cached locations representing warehouses, fulfillment centers, or retail locations for order routing and inventory tracking.",
+        "operationId": "listLocations",
+        "tags": ["Locations"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/facility_locations": {
+      "get": {
+        "summary": "List Facility Locations",
+        "description": "Retrieve cached distinct stock pools within a facility like warehouses, fulfillment centers, or retail locations.",
+        "operationId": "listFacilityLocations",
+        "tags": ["Locations"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/location_groups": {
+      "get": {
+        "summary": "List Location Groups",
+        "description": "Retrieve cached collections of locations treated as a unit for routing, inventory management, or reporting purposes.",
+        "operationId": "listLocationGroups",
+        "tags": ["Locations"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/purchases": {
+      "get": {
+        "summary": "List Purchases",
+        "description": "Retrieve cached Purchase Orders (POs) sent to suppliers or warehouses to order inventory and track expected incoming stock.",
+        "operationId": "listPurchases",
+        "tags": ["Procurement"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/suppliers": {
+      "get": {
+        "summary": "List Suppliers",
+        "description": "Retrieve cached vendor/supplier records providing products, synced between procurement systems and ERPs for purchase order management.",
+        "operationId": "listSuppliers",
+        "tags": ["Procurement"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/inbound_transfers": {
+      "get": {
+        "summary": "List Inbound Transfers",
+        "description": "Retrieve cached inbound shipment notifications (ASNs) sent to warehouses alerting them about incoming inventory with handling and storage requirements.",
+        "operationId": "listInboundTransfers",
+        "tags": ["Procurement"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/receipts": {
+      "get": {
+        "summary": "List Receipts",
+        "description": "Retrieve cached confirmation records when warehouses receive inbound shipments, including quality checks and triggering inventory updates.",
+        "operationId": "listReceipts",
+        "tags": ["Procurement"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/invoices": {
+      "get": {
+        "summary": "List Invoices",
+        "description": "Retrieve cached financial documents generated after orders ship, used primarily in B2B and dropship scenarios for order-to-cash completion.",
+        "operationId": "listInvoices",
+        "tags": ["Finance"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payments": {
+      "get": {
+        "summary": "List Payments",
+        "description": "Retrieve cached payment records and statuses flowing between selling channels and ERPs, tracking when and how payments are made.",
+        "operationId": "listPayments",
+        "tags": ["Finance"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/order_statements": {
+      "get": {
+        "summary": "List Order Statements",
+        "description": "Retrieve cached payout reports from channels including orders, fees, and refunds for financial reconciliation with ERPs.",
+        "operationId": "listOrderStatements",
+        "tags": ["Finance"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/order_statement_transactions": {
+      "get": {
+        "summary": "List Order Statement Transactions",
+        "description": "Retrieve cached individual line-item transactions within payout statements for detailed financial reconciliation.",
+        "operationId": "listOrderStatementTransactions",
+        "tags": ["Finance"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/catalogs": {
+      "get": {
+        "summary": "List Catalogs",
+        "description": "Retrieve cached customer-specific product catalogs containing custom pricing and product assignments for B2B/wholesale operations.",
+        "operationId": "listCatalogs",
+        "tags": ["B2B"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/catalog_products": {
+      "get": {
+        "summary": "List Catalog Products",
+        "description": "Retrieve cached products assigned to specific customer catalogs with unique pricing tiers, primarily used in B2B scenarios.",
+        "operationId": "listCatalogProducts",
+        "tags": ["B2B"],
+        "parameters": [
+          {"$ref": "#/components/parameters/integrated_account_id"},
+          {"$ref": "#/components/parameters/limit"},
+          {"$ref": "#/components/parameters/next_cursor"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "API token from your Handled dashboard"
+      }
+    },
+    "parameters": {
+      "integrated_account_id": {
+        "name": "integrated_account_id",
+        "in": "query",
+        "required": true,
+        "description": "The ID of the connected account to query",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "limit": {
+        "name": "limit",
+        "in": "query",
+        "required": false,
+        "description": "Maximum number of records to return (default: 50)",
+        "schema": {
+          "type": "integer",
+          "default": 50
+        }
+      },
+      "next_cursor": {
+        "name": "next_cursor",
+        "in": "query",
+        "required": false,
+        "description": "Pagination cursor from previous response",
+        "schema": {
+          "type": "string"
+        }
+      },
+      "resource_id": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "description": "Resource ID",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Invalid or missing API token"
+      },
+      "NotFound": {
+        "description": "Resource not found"
+      },
+      "RateLimited": {
+        "description": "Rate limit exceeded"
+      }
+    },
+    "schemas": {
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "status": {"type": "string"},
+          "line_items": {"type": "array", "items": {"type": "object"}},
+          "shipping_address": {"type": "object"},
+          "billing_address": {"type": "object"},
+          "total_price": {"type": "number"},
+          "currency": {"type": "string"},
+          "created_at": {"type": "string", "format": "date-time"},
+          "updated_at": {"type": "string", "format": "date-time"},
+          "cached_at": {"type": "string", "format": "date-time", "description": "When this record was last cached"}
+        }
+      },
+      "OrderListResponse": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "array", "items": {"$ref": "#/components/schemas/Order"}},
+          "next_cursor": {"type": "string", "nullable": true}
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "sku": {"type": "string"},
+          "name": {"type": "string"},
+          "description": {"type": "string"},
+          "price": {"type": "number"},
+          "weight": {"type": "number"},
+          "dimensions": {"type": "object"},
+          "created_at": {"type": "string", "format": "date-time"},
+          "cached_at": {"type": "string", "format": "date-time", "description": "When this record was last cached"}
+        }
+      },
+      "ProductListResponse": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "array", "items": {"$ref": "#/components/schemas/Product"}},
+          "next_cursor": {"type": "string", "nullable": true}
+        }
+      },
+      "Inventory": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "product_id": {"type": "string"},
+          "location_id": {"type": "string"},
+          "quantity_available": {"type": "integer"},
+          "quantity_reserved": {"type": "integer"},
+          "quantity_on_hand": {"type": "integer"},
+          "updated_at": {"type": "string", "format": "date-time"},
+          "cached_at": {"type": "string", "format": "date-time", "description": "When this record was last cached"}
+        }
+      },
+      "InventoryListResponse": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "array", "items": {"$ref": "#/components/schemas/Inventory"}},
+          "next_cursor": {"type": "string", "nullable": true}
+        }
+      },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "email": {"type": "string"},
+          "first_name": {"type": "string"},
+          "last_name": {"type": "string"},
+          "phone": {"type": "string"},
+          "created_at": {"type": "string", "format": "date-time"},
+          "cached_at": {"type": "string", "format": "date-time", "description": "When this record was last cached"}
+        }
+      },
+      "CustomerListResponse": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "array", "items": {"$ref": "#/components/schemas/Customer"}},
+          "next_cursor": {"type": "string", "nullable": true}
+        }
+      },
+      "FulfillmentOrder": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "order_id": {"type": "string"},
+          "location_id": {"type": "string"},
+          "status": {"type": "string"},
+          "line_items": {"type": "array", "items": {"type": "object"}},
+          "created_at": {"type": "string", "format": "date-time"},
+          "cached_at": {"type": "string", "format": "date-time", "description": "When this record was last cached"}
+        }
+      },
+      "FulfillmentOrderListResponse": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "array", "items": {"$ref": "#/components/schemas/FulfillmentOrder"}},
+          "next_cursor": {"type": "string", "nullable": true}
+        }
+      },
+      "FulfillmentShipment": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "fulfillment_order_id": {"type": "string"},
+          "carrier": {"type": "string"},
+          "tracking_number": {"type": "string"},
+          "shipped_at": {"type": "string", "format": "date-time"},
+          "cached_at": {"type": "string", "format": "date-time", "description": "When this record was last cached"}
+        }
+      },
+      "FulfillmentShipmentListResponse": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "array", "items": {"$ref": "#/components/schemas/FulfillmentShipment"}},
+          "next_cursor": {"type": "string", "nullable": true}
+        }
+      },
+      "Return": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "order_id": {"type": "string"},
+          "status": {"type": "string"},
+          "reason": {"type": "string"},
+          "created_at": {"type": "string", "format": "date-time"},
+          "cached_at": {"type": "string", "format": "date-time", "description": "When this record was last cached"}
+        }
+      },
+      "ReturnListResponse": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "array", "items": {"$ref": "#/components/schemas/Return"}},
+          "next_cursor": {"type": "string", "nullable": true}
+        }
+      },
+      "Refund": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "order_id": {"type": "string"},
+          "amount": {"type": "number"},
+          "currency": {"type": "string"},
+          "status": {"type": "string"},
+          "created_at": {"type": "string", "format": "date-time"},
+          "cached_at": {"type": "string", "format": "date-time", "description": "When this record was last cached"}
+        }
+      },
+      "RefundListResponse": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "array", "items": {"$ref": "#/components/schemas/Refund"}},
+          "next_cursor": {"type": "string", "nullable": true}
+        }
+      },
+      "Tracking": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "carrier": {"type": "string"},
+          "tracking_number": {"type": "string"},
+          "status": {"type": "string"},
+          "estimated_delivery": {"type": "string", "format": "date-time"},
+          "events": {"type": "array", "items": {"type": "object"}},
+          "cached_at": {"type": "string", "format": "date-time", "description": "When this record was last cached"}
+        }
+      },
+      "TrackingListResponse": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "array", "items": {"$ref": "#/components/schemas/Tracking"}},
+          "next_cursor": {"type": "string", "nullable": true}
+        }
+      },
+      "Location": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "type": {"type": "string"},
+          "address": {"type": "object"},
+          "is_active": {"type": "boolean"},
+          "cached_at": {"type": "string", "format": "date-time", "description": "When this record was last cached"}
+        }
+      },
+      "LocationListResponse": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "array", "items": {"$ref": "#/components/schemas/Location"}},
+          "next_cursor": {"type": "string", "nullable": true}
+        }
+      },
+      "Purchase": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "supplier_id": {"type": "string"},
+          "status": {"type": "string"},
+          "line_items": {"type": "array", "items": {"type": "object"}},
+          "expected_delivery": {"type": "string", "format": "date-time"},
+          "created_at": {"type": "string", "format": "date-time"},
+          "cached_at": {"type": "string", "format": "date-time", "description": "When this record was last cached"}
+        }
+      },
+      "PurchaseListResponse": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "array", "items": {"$ref": "#/components/schemas/Purchase"}},
+          "next_cursor": {"type": "string", "nullable": true}
+        }
+      },
+      "Invoice": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "order_id": {"type": "string"},
+          "customer_id": {"type": "string"},
+          "total_amount": {"type": "number"},
+          "currency": {"type": "string"},
+          "status": {"type": "string"},
+          "due_date": {"type": "string", "format": "date-time"},
+          "created_at": {"type": "string", "format": "date-time"},
+          "cached_at": {"type": "string", "format": "date-time", "description": "When this record was last cached"}
+        }
+      },
+      "InvoiceListResponse": {
+        "type": "object",
+        "properties": {
+          "result": {"type": "array", "items": {"$ref": "#/components/schemas/Invoice"}},
+          "next_cursor": {"type": "string", "nullable": true}
+        }
+      }
+    }
+  }
+}

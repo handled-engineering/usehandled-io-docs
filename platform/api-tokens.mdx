@@ -1,0 +1,76 @@
+---
+title: "API Tokens"
+description: "Authenticate API requests with tokens"
+---
+
+## What Tokens Do
+
+API tokens identify your requests to Handled. Include them in the `Authorization` header of every API call.
+
+## Create a Token
+
+<Steps>
+  <Step title="Open Settings">
+    Log into Handled and go to **Settings > API Tokens**
+  </Step>
+  <Step title="Create">
+    Click **Create API Token**
+  </Step>
+  <Step title="Name">
+    Enter a name (for your reference)
+  </Step>
+  <Step title="Generate">
+    Click **Create API Token**
+  </Step>
+  <Step title="Copy">
+    Copy the token immediately
+  </Step>
+  <Step title="Confirm">
+    Confirm you've copied it
+  </Step>
+  <Step title="Done">
+    Click **Done**
+  </Step>
+</Steps>
+
+<Warning>
+The token is only shown once. Make sure to copy it before closing the dialog.
+</Warning>
+
+## Security
+
+<CardGroup cols={2}>
+  <Card title="Store Securely" icon="lock">
+    Treat tokens like passwords
+  </Card>
+  <Card title="Don't Share" icon="eye-slash">
+    Anyone with your token can access your account
+  </Card>
+  <Card title="Use HTTPS" icon="shield">
+    All API requests require HTTPS
+  </Card>
+  <Card title="Separate Tokens" icon="layer-group">
+    Create different tokens for different environments
+  </Card>
+</CardGroup>
+
+## Using Tokens
+
+Include in every request:
+
+```
+Authorization: Bearer {your-api-token}
+```
+
+Example:
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/integrated-accounts' \
+  -H 'Authorization: Bearer sk_live_abc123...'
+```
+
+## Token Management
+
+- Create multiple tokens for different purposes
+- Delete tokens you no longer need
+- Rotate tokens periodically for security

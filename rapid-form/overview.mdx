@@ -1,0 +1,58 @@
+---
+title: "RapidForm Overview"
+description: "Collect user input during the account connection process"
+---
+
+## What RapidForm Does
+
+RapidForm displays custom forms to users after they connect an account. Collected values are stored as variables for use in API calls and sync jobs.
+
+## Use Cases
+
+### Select a Warehouse
+
+After connecting a WMS, let users choose which warehouse to sync:
+1. Fetch available warehouses from the API
+2. Display as a dropdown
+3. Store selection as `warehouse_id` variable
+
+### Choose Data to Sync
+
+Let users pick which data types to sync:
+1. Show checkboxes for orders, inventory, shipments
+2. Store selections for sync job configuration
+
+### Filter by Tags
+
+For ticketing integrations:
+1. Fetch available tags from the service
+2. Let users select which tags to sync
+3. Use selections to filter sync jobs
+
+## Field Types
+
+| Type | Description |
+|------|-------------|
+| **Single Select** | Dropdown with one choice |
+| **Multi Select** | Multiple selections allowed |
+| **Text** | Free text input |
+| **Password** | Masked input for secrets |
+| **Checkbox** | True/false toggle |
+| **Hidden** | Store values without user input |
+
+## Features
+
+<CardGroup cols={2}>
+  <Card title="Dynamic Data" icon="database">
+    Populate options from API calls
+  </Card>
+  <Card title="Dependencies" icon="diagram-project">
+    Show fields based on other selections
+  </Card>
+  <Card title="Validation" icon="check">
+    Custom rules with JSONata expressions
+  </Card>
+  <Card title="Transformation" icon="shuffle">
+    Modify values before saving
+  </Card>
+</CardGroup>

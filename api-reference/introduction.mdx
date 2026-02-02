@@ -1,33 +1,63 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "API Introduction"
+description: "Getting started with the Handled API"
 ---
 
+## Base URL
+
+All API requests use:
+
+```
+https://api.usehandled.io/api/v1/ipaas
+```
+
 <Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
+HTTPS is required for all requests. HTTP requests are rejected.
 </Note>
 
-## Welcome
+## Request Headers
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+Include these headers with every request:
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
-
-## Authentication
-
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
-
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
 ```
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer <your-api-token>
+```
+
+## API Structure
+
+The API is organized into these sections:
+
+### Core Concepts
+- [Authentication](/api-reference/authentication) - Bearer token authentication
+- [Pagination](/api-reference/pagination) - Cursor-based pagination
+- [Query Parameters](/api-reference/query-parameters) - Filtering and sorting
+- [Rate Limits](/api-reference/rate-limits) - Request throttling
+- [Error Handling](/api-reference/errors) - Error responses
+
+### Admin APIs
+- Integrated Accounts - Manage connected accounts
+- Integrations - Manage installed integrations
+- Webhooks - Configure event notifications
+- Sync Jobs - Manage data synchronization
+- Workflows - Automate actions
+
+### Unified APIs
+
+Standardized APIs across commerce categories:
+
+| Category | Description |
+|----------|-------------|
+| WMS | Warehouse Management |
+| Ecommerce | Shopify, Amazon, Walmart, TikTok |
+| Shipping | DHL, UPS, FedEx, USPS |
+| Billing | Payment systems |
+| Sales | CRM & orders |
+| Finance | Accounting |
+| Communication | Email & SMS |
+| Marketing | Ads & campaigns |
+| Analytics | Data & insights |
+| Productivity | Workflow tools |
+
+Each category provides consistent endpoints for listing, retrieving, creating, updating, and deleting resources.

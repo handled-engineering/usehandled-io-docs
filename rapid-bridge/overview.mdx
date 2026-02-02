@@ -1,0 +1,68 @@
+---
+title: "RapidBridge Overview"
+description: "Automated data synchronization from integrated accounts to your webhook endpoints"
+---
+
+## What RapidBridge Does
+
+RapidBridge handles the complexity of data synchronization:
+
+| Feature | Description |
+|---------|-------------|
+| **Scheduling** | Run syncs on-demand or on a schedule |
+| **Rate limiting** | Automatic throttling to respect API limits |
+| **Error handling** | Configurable retry and failure behavior |
+| **Webhook delivery** | Data sent to your endpoint as it's fetched |
+
+## Without RapidBridge
+
+Building data sync yourself requires:
+- Cron job infrastructure
+- Rate limit tracking per integration
+- Retry logic with backoff
+- Query parameter handling per API
+- Error monitoring and alerting
+
+## How It Works
+
+<Steps>
+  <Step title="Create a Sync Job">
+    Define which resources to fetch
+  </Step>
+  <Step title="Run the Job">
+    Execute against a connected account
+  </Step>
+  <Step title="Receive Data">
+    Get records via webhook as they're fetched
+  </Step>
+  <Step title="Handle Completion">
+    Know when the sync finishes
+  </Step>
+</Steps>
+
+## Webhook Event Sequence
+
+```
+sync_job_run:started     → Sync beginning, respond 200 to continue
+sync_job_run:record      → Data record fetched, respond 200 to continue
+sync_job_run:rate_limited → Hit rate limit, pausing temporarily
+sync_job_run:completed   → Sync finished successfully
+sync_job_run:failed      → Sync failed
+```
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Dependencies" icon="diagram-project">
+    Fetch child records based on parent IDs
+  </Card>
+  <Card title="Incremental Syncs" icon="clock-rotate-left">
+    Only fetch records changed since last run
+  </Card>
+  <Card title="Scheduled Execution" icon="calendar">
+    Cron-based recurring syncs
+  </Card>
+  <Card title="Data Transformation" icon="shuffle">
+    Modify records before delivery
+  </Card>
+</CardGroup>

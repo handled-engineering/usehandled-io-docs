@@ -1,0 +1,67 @@
+---
+title: "Platform Overview"
+description: "Handled is an integration infrastructure platform for commerce. Connect to 150+ ecommerce, WMS, carrier, and logistics services through a single unified API."
+---
+
+## What Handled Does
+
+### One API for Everything
+
+Instead of building separate integrations for Shopify, Amazon, FedEx, ShipHero, and every other service, you connect to Handled once. We handle the complexity.
+
+### Real-Time Data
+
+Handled connects directly to each service. Your data is always current - no stale caches or sync delays.
+
+### Pre-Built Connectors
+
+Access 150+ integrations across WMS, ecommerce, carriers, billing, and more. Each connector handles authentication, pagination, and rate limits automatically.
+
+## Core Components
+
+<CardGroup cols={2}>
+  <Card title="Unified APIs" icon="layer-group" href="/unified-apis/overview">
+    Standardized endpoints that work the same across all integrations. A `GET /unified/wms/orders` call returns consistent data whether the source is ShipHero, Deposco, or Logiwa.
+  </Card>
+  <Card title="Proxy APIs" icon="arrow-right-arrow-left">
+    Direct access to underlying service APIs when you need platform-specific features. Handled manages authentication and rate limits while passing through the raw data.
+  </Card>
+  <Card title="Sync Jobs" icon="rotate" href="/rapid-bridge/overview">
+    Automated data synchronization that runs on your schedule. Fetch orders, inventory, shipments, and more - delivered to your webhook endpoint.
+  </Card>
+  <Card title="Embedded Connector" icon="window" href="/link-sdk/overview">
+    A drop-in UI component that lets your customers connect their own accounts (Shopify stores, carrier accounts, WMS systems) directly from your application.
+  </Card>
+</CardGroup>
+
+## How It Works
+
+<Steps>
+  <Step title="Connect">
+    Install an integration from our catalog
+  </Step>
+  <Step title="Authenticate">
+    Your customers connect their accounts via the embedded connector
+  </Step>
+  <Step title="Access Data">
+    Use Unified or Proxy APIs to read and write data
+  </Step>
+  <Step title="Sync">
+    Set up automated sync jobs to keep data flowing
+  </Step>
+</Steps>
+
+## API Categories
+
+Handled provides standardized APIs across commerce categories:
+
+| Category | Description | Examples |
+|----------|-------------|----------|
+| **WMS** | Warehouse Management | ShipHero, Deposco, Logiwa |
+| **Ecommerce** | Online Stores | Shopify, Amazon, Walmart, TikTok |
+| **Shipping** | Carriers | DHL, UPS, FedEx, USPS |
+| **Billing** | Payment Systems | Stripe, payment processors |
+| **Finance** | Accounting | ERP systems, accounting software |
+| **CRM** | Sales & Customers | Customer management systems |
+
+Each category provides consistent endpoints for listing, retrieving, creating, updating, and deleting resources.

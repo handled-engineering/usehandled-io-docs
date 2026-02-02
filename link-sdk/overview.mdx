@@ -1,0 +1,131 @@
+---
+title: "Link SDK"
+description: "Embed the account connection flow in your application"
+---
+
+## Installation
+
+```bash
+npm install @handled/link-sdk
+```
+
+## Usage
+
+```javascript
+import authenticate from '@handled/link-sdk';
+
+// Get link token from your backend
+const linkToken = 'your-link-token';
+
+authenticate(linkToken)
+  .then((response) => {
+    console.log('Connected:', response);
+    // {result: 'success', integration: 'shiphero', integrated_account_id: 'acc_123'}
+  })
+  .catch((error) => {
+    console.log('Error:', error);
+  });
+```
+
+## How It Works
+
+<Steps>
+  <Step title="Generate Token">
+    Generate a link token from your backend
+  </Step>
+  <Step title="Call authenticate()">
+    Call `authenticate()` with the token
+  </Step>
+  <Step title="Popup Opens">
+    A popup opens with the connection UI
+  </Step>
+  <Step title="User Authenticates">
+    User selects integration and authenticates
+  </Step>
+  <Step title="Handle Response">
+    Promise resolves on success, rejects on error
+  </Step>
+</Steps>
+
+## Generate Link Token
+
+From your backend:
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/link-token' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "tenant_id": "customer-123"
+  }'
+```
+
+## Response Handling
+
+### Success
+
+```javascript
+{
+  result: 'success',
+  integration: 'shiphero',
+  integrated_account_id: 'acc_123'
+}
+```
+
+### Errors
+
+The promise rejects when:
+- User closes the popup
+- Authentication fails
+- Validation fails (if configured)
+
+```javascript
+authenticate(linkToken).catch((error) => {
+  if (error.type === 'validation_error') {
+    // Credentials invalid
+  } else if (error.type === 'user_closed') {
+    // User closed popup
+  } else {
+    // Other error
+  }
+});
+```
+
+## Alternative: Magic Link
+
+Generate a shareable link instead of embedding:
+
+```
+https://app.handled.one/connect-account?link_token={link_token}
+```
+
+Send this to customers who need to connect accounts outside your app.
+
+## React Example
+
+```jsx
+import { useState } from 'react';
+import authenticate from '@handled/link-sdk';
+
+function ConnectButton({ linkToken }) {
+  const [loading, setLoading] = useState(false);
+
+  const handleConnect = async () => {
+    setLoading(true);
+    try {
+      const result = await authenticate(linkToken);
+      console.log('Connected:', result);
+    } catch (error) {
+      console.error('Connection failed:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <button onClick={handleConnect} disabled={loading}>
+      {loading ? 'Connecting...' : 'Connect Account'}
+    </button>
+  );
+}
+```

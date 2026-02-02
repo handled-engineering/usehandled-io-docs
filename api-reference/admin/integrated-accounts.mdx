@@ -1,0 +1,93 @@
+---
+title: "Integrated Accounts API"
+description: "Manage connected accounts programmatically"
+---
+
+## List Integrated Accounts
+
+Retrieve all connected accounts in your environment.
+
+<CodeGroup>
+```bash cURL
+curl 'https://api.usehandled.io/api/v1/ipaas/integrated-account' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+```javascript JavaScript
+const response = await fetch('https://api.usehandled.io/api/v1/ipaas/integrated-account', {
+  headers: { 'Authorization': 'Bearer YOUR_API_TOKEN' }
+});
+const data = await response.json();
+```
+</CodeGroup>
+
+### Response
+
+```json
+{
+  "result": [
+    {
+      "id": "acc_123",
+      "tenant_id": "customer-456",
+      "integration": {
+        "name": "shiphero",
+        "label": "ShipHero"
+      },
+      "status": "active",
+      "created_at": "2024-01-15T10:30:00Z"
+    }
+  ],
+  "next_cursor": null
+}
+```
+
+## Get Integrated Account
+
+Retrieve a specific connected account.
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/integrated-account/{account_id}' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Update Integrated Account
+
+Update account context variables or overrides.
+
+```bash
+curl -X PATCH 'https://api.usehandled.io/api/v1/ipaas/integrated-account/{account_id}' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "context": {
+      "warehouse_id": "wh-789"
+    }
+  }'
+```
+
+## Delete Integrated Account
+
+Permanently delete a connected account.
+
+<Warning>
+This action cannot be undone. All account data and API logs will be deleted.
+</Warning>
+
+```bash
+curl -X DELETE 'https://api.usehandled.io/api/v1/ipaas/integrated-account/{account_id}' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Filter by Integration
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/integrated-account?integration.name=shiphero' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Filter by Tenant
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/integrated-account?tenant_id=customer-456' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```

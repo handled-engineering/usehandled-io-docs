@@ -1,0 +1,51 @@
+---
+title: "Webhooks Overview"
+description: "Receive notifications when events occur in your Handled account"
+---
+
+## What Webhooks Do
+
+Webhooks send HTTP POST requests to your endpoint when:
+- Accounts are connected or updated
+- Sync jobs start, complete, or fail
+- Records are created, updated, or deleted
+
+## Requirements
+
+| Requirement | Details |
+|-------------|---------|
+| **HTTPS only** | Your endpoint must use HTTPS |
+| **POST method** | All webhooks are POST requests |
+| **Return 200** | Respond with 200 to acknowledge receipt |
+
+## Security
+
+Each webhook includes an `X-Handled-Signature` header containing a SHA256 HMAC signature. Use your webhook secret to verify requests come from Handled.
+
+## Retries
+
+If your endpoint fails (4xx or 5xx response):
+- Handled retries up to 3 times
+- Exponential backoff between retries (max 10 seconds)
+- Webhook is deactivated after persistent failures
+
+<Warning>
+You'll receive an email when a webhook is deactivated due to persistent failures.
+</Warning>
+
+## Quick Start
+
+<Steps>
+  <Step title="Create Webhook">
+    Create a webhook via [UI](/webhooks/creating-via-ui) or [API](/webhooks/creating-via-api)
+  </Step>
+  <Step title="Set Up Endpoint">
+    Create an HTTPS endpoint to receive events
+  </Step>
+  <Step title="Verify Signatures">
+    Implement [signature verification](/webhooks/processing-events)
+  </Step>
+  <Step title="Process Events">
+    Handle events based on their type
+  </Step>
+</Steps>

@@ -1,0 +1,150 @@
+---
+title: "Creating Unified APIs"
+description: "Build custom Unified APIs when you need schemas not in the catalog"
+---
+
+## Create a Unified API
+
+<Steps>
+  <Step title="Open Catalog">
+    Go to **Catalog**
+  </Step>
+  <Step title="Create">
+    Click **Create Unified API**
+  </Step>
+</Steps>
+
+### Basic Details
+
+| Field | Description |
+|-------|-------------|
+| Name | API identifier in kebab-case (e.g., `wms`) |
+| Label | Display name (e.g., "Warehouse Management") |
+| Category | Organizational grouping |
+
+The name sets the API path: `/unified/{name}`
+
+## Add Resources
+
+Resources are the data types in your API (e.g., `orders`, `inventory`).
+
+<Steps>
+  <Step title="Open Resources Tab">
+    Click **Resources** tab
+  </Step>
+  <Step title="Add Resource">
+    Click **Add Resource**
+  </Step>
+  <Step title="Name Resource">
+    Enter name in snake_case (e.g., `orders`)
+  </Step>
+</Steps>
+
+### Define Schema
+
+The schema describes your response structure:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique order identifier"
+    },
+    "status": {
+      "type": "string",
+      "description": "Order status"
+    },
+    "line_items": {
+      "type": "array",
+      "description": "Products in the order"
+    }
+  }
+}
+```
+
+## Add Methods
+
+Methods define operations on resources.
+
+<Steps>
+  <Step title="Select Resource">
+    Select your resource
+  </Step>
+  <Step title="Open Mapping Tab">
+    Click **Mapping** tab
+  </Step>
+  <Step title="Add Method">
+    Click **Add Method**
+  </Step>
+</Steps>
+
+Standard methods: `list`, `get`, `create`, `update`, `delete`
+
+## Configure Mappings
+
+For each integration, define how to translate data.
+
+### Query Mapping
+
+Transform query parameters:
+
+```
+Unified query: {status: "pending"}
+Mapped to ShipHero: {order_status: "PENDING"}
+```
+
+### Response Mapping
+
+Transform responses using JSONata:
+
+```jsonata
+{
+  "id": order_id,
+  "status": $lowercase(order_status),
+  "created_at": created_date
+}
+```
+
+### Request Body Mapping
+
+For create/update operations:
+
+```jsonata
+{
+  "order_title": body.name,
+  "line_items": body.items
+}
+```
+
+## Static Responses
+
+For endpoints that return fixed data:
+
+1. Enable **Static Mapping**
+2. Define the response:
+
+```json
+{
+  "statuses": ["pending", "processing", "shipped", "delivered"]
+}
+```
+
+No API call is made - the static response is returned directly.
+
+## Before and After Steps
+
+### Before Steps
+
+Run before the main API call:
+- Fetch related data
+- Validate inputs
+- Set up context
+
+### After Steps
+
+Run after the main API call:
+- Enrich responses
+- Fetch complete records after creates
+- Log events

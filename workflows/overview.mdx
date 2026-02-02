@@ -1,0 +1,51 @@
+---
+title: "Workflows Overview"
+description: "Automate actions in response to events"
+---
+
+## What Workflows Do
+
+Workflows execute automated steps when specific events occur. Instead of writing webhook handlers, you define conditions and actions through configuration.
+
+## Structure
+
+| Component | Description |
+|-----------|-------------|
+| Trigger | Event that starts the workflow |
+| Conditions | Rules that determine if workflow runs |
+| Steps | Actions to execute |
+
+## Supported Triggers
+
+- `integrated_account:active` - Account connected and ready
+
+## Use Cases
+
+### Auto-Start Sync on Connection
+
+When a customer connects their ShipHero account, automatically start syncing orders:
+
+1. **Trigger:** `integrated_account:active`
+2. **Condition:** `integration.name = 'shiphero'`
+3. **Action:** Run sync job
+
+### Scheduled Recurring Sync
+
+Run a sync job every 6 hours for all connected accounts.
+
+## How It Works
+
+<Steps>
+  <Step title="Event Emitted">
+    Event is emitted (e.g., account becomes active)
+  </Step>
+  <Step title="Check Workflows">
+    Handled checks workflows for that trigger
+  </Step>
+  <Step title="Evaluate Conditions">
+    Workflows with matching conditions execute
+  </Step>
+  <Step title="Run Steps">
+    Steps run in order
+  </Step>
+</Steps>

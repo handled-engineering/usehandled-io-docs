@@ -1,0 +1,105 @@
+---
+title: "Creating Workflows"
+description: "Set up automated workflows to respond to events"
+---
+
+## Prerequisites
+
+Before creating a workflow, set up:
+- A webhook to receive sync job events
+- A sync job defining what data to fetch
+- Connected accounts to run the workflow against
+
+## Create a Workflow
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/workflow' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "label": "Start sync on connection",
+    "trigger_name": "integrated_account:active",
+    "config": {
+      "run_if": "integration.name = '\''shiphero'\''",
+      "steps": [
+        {
+          "type": "run",
+          "action": "run_sync_job",
+          "config": {
+            "sync_job_id": "JOB_ID",
+            "integrated_account_id": "{{integrated_account_id}}",
+            "webhook_id": "WEBHOOK_ID"
+          }
+        }
+      ]
+    }
+  }'
+```
+
+## Configuration
+
+### Trigger
+
+Currently supported: `integrated_account:active`
+
+### Conditions
+
+Use `run_if` with JSONata expressions:
+
+```
+integration.name = 'shiphero'
+```
+
+Available data:
+- `integration.name` - Integration identifier
+- `integrated_account_id` - Account ID
+- `tenant_id` - Customer identifier
+
+### Steps
+
+| Field | Description |
+|-------|-------------|
+| `type` | Step type (`run`) |
+| `action` | Action to perform (`run_sync_job`) |
+| `config` | Action parameters |
+
+## Scheduled Execution
+
+Add a cron expression for recurring runs:
+
+```json
+{
+  "steps": [
+    {
+      "type": "run",
+      "action": "run_sync_job",
+      "cron_expression": "0 */6 * * *",
+      "config": {...}
+    }
+  ]
+}
+```
+
+<Note>
+Cron expressions use UTC timezone.
+</Note>
+
+## Dynamic Configuration
+
+Use JSONata for complex logic:
+
+```json
+{
+  "config": "(
+    $sync_job_id := $mapValues(integration.name, {
+      \"shiphero\": \"job-123\",
+      \"deposco\": \"job-456\"
+    });
+    {
+      \"sync_job_id\": $sync_job_id,
+      \"integrated_account_id\": integrated_account_id,
+      \"webhook_id\": \"webhook-789\"
+    }
+  )"
+}
+```

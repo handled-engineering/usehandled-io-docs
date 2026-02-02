@@ -1,0 +1,67 @@
+---
+title: "Context Variables"
+description: "Variables store account-specific values used in API requests"
+---
+
+## Common Use Cases
+
+| Variable | Use Case |
+|----------|----------|
+| `{{subdomain}}` | Multi-tenant services |
+| `{{warehouse_id}}` | Filter API calls to specific locations |
+| `{{api_version}}` | Use different API versions per account |
+
+## View Variables
+
+<Steps>
+  <Step title="Open Account">
+    Go to **Integrated Accounts** and select an account
+  </Step>
+  <Step title="Find Variables">
+    Find the **Variables** section
+  </Step>
+</Steps>
+
+## Edit Variables
+
+<Steps>
+  <Step title="Open Editor">
+    Click **Edit Variables**
+  </Step>
+  <Step title="Modify Values">
+    Add or modify values
+  </Step>
+  <Step title="Save">
+    Click **Save**
+  </Step>
+</Steps>
+
+## Using Variables
+
+Reference variables in API configurations:
+
+**In Base URL:**
+```
+https://{{subdomain}}.api.example.com
+```
+
+**In Headers:**
+```
+X-Warehouse-ID: {{warehouse_id}}
+```
+
+**In Query Parameters:**
+```
+location={{warehouse_id}}
+```
+
+**In Sync Jobs:**
+```json
+{"warehouse_id": "{{warehouse_id}}"}
+```
+
+## After Editing
+
+<Warning>
+Some variable changes require reauthorization. The user may need to reconnect their account for changes to take effect.
+</Warning>

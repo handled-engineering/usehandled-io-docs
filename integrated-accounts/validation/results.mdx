@@ -1,0 +1,62 @@
+---
+title: "Connection Validation Results"
+description: "What happens when validation runs during account connection"
+---
+
+## Successful Validation
+
+When the test API call succeeds:
+- Account is marked as validated
+- Connection completes
+- User sees success message
+- `integrated_account:active` webhook sent
+
+## Failed Validation
+
+When the test API call fails:
+
+### Authentication Error (403)
+
+The credentials are invalid or lack permissions.
+
+**User sees:** "Validation Error" message with guidance
+
+**Your app:** Link SDK throws `validation_error` exception
+
+### Other Errors
+
+Network issues, service outages, or configuration problems.
+
+**User sees:** Error message with details
+
+**Your app:** Link SDK throws an error with context
+
+## Handling Failures in Your App
+
+```javascript
+import authenticate from '@handled/link-sdk';
+
+authenticate(linkToken)
+  .then((response) => {
+    console.log('Connected:', response);
+  })
+  .catch((error) => {
+    if (error.type === 'validation_error') {
+      // Prompt user to check their credentials
+      showError('Please verify your API credentials and try again.');
+    } else if (error.type === 'user_closed') {
+      // User closed the popup
+      console.log('User cancelled connection');
+    } else {
+      // Handle other connection errors
+      showError('Connection failed. Please try again.');
+    }
+  });
+```
+
+## Webhook Events
+
+| Event | When |
+|-------|------|
+| `integrated_account:validation_error` | Validation failed |
+| `integrated_account:active` | Validation passed, account ready |

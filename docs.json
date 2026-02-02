@@ -1,164 +1,236 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "aspen",
-  "name": "Use Handled",
+  "name": "Handled",
   "colors": {
     "primary": "#1e90ed",
     "light": "#09b0e4",
     "dark": "#06466e"
   },
   "favicon": "/images/Iso_1.png",
+  "logo": {
+    "light": "/images/Logo_1.png",
+    "dark": "/images/Logo_2.png"
+  },
   "navigation": {
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "icon": "book-open-cover",
-          "href": "https://ipaas.usehandled.io"
+          "anchor": "Dashboard",
+          "icon": "gauge",
+          "href": "https://app.handled.one"
         },
         {
-          "anchor": "API Key",
-          "icon": "key",
-          "href": "https://ipaas.usehandled.io/"
+          "anchor": "API Reference",
+          "icon": "code",
+          "href": "/api-reference/introduction"
         }
       ]
     },
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Documentation",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
-              "get-started-with-handled"
+              "introduction",
+              "quickstart"
             ]
           },
           {
-            "group": "Practical Guides",
+            "group": "How Handled Works",
             "pages": [
-              "start-here",
-              "guides/practical-guides/creating-an-account",
+              "how-handled-works/overview",
+              "how-handled-works/what-makes-us-different",
+              "how-handled-works/realtime-considerations"
+            ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/overview",
+              "integrations/creating-integrations",
+              "integrations/customizing-integrations",
+              "integrations/oauth-credentials",
+              "integrations/enabling-disabling",
+              "integrations/uninstalling",
+              "integrations/configuration-reference"
+            ]
+          },
+          {
+            "group": "Unified APIs",
+            "pages": [
+              "unified-apis/overview",
+              "unified-apis/installing",
+              "unified-apis/request-flow",
+              "unified-apis/creating-unified-apis",
+              "unified-apis/mapping-bindings",
+              "unified-apis/overriding-mappings"
+            ]
+          },
+          {
+            "group": "Integrated Accounts",
+            "pages": [
+              "integrated-accounts/overview",
+              "integrated-accounts/connection-flow",
+              "integrated-accounts/making-api-calls",
+              "integrated-accounts/context-variables",
+              "integrated-accounts/reauthorizing",
+              "integrated-accounts/deleting",
               {
-                "group": "Creating An Integration",
+                "group": "Connection Validation",
                 "pages": [
-                  "guides/practical-guides/creating-an-integration/integration-from-api",
-                  "guides/practical-guides/embedded-ui"
+                  "integrated-accounts/validation/setup",
+                  "integrated-accounts/validation/results"
                 ]
-              },
-              "guides/practical-guides/bi-directional-data-sync",
-              "guides/practical-guides/data-automations"
+              }
             ]
           },
           {
-            "group": "Writing content",
-            "hidden": true,
+            "group": "Webhooks",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "webhooks/overview",
+              "webhooks/creating-via-ui",
+              "webhooks/creating-via-api",
+              "webhooks/processing-events",
+              "webhooks/event-types"
+            ]
+          },
+          {
+            "group": "Link SDK",
+            "pages": [
+              "link-sdk/overview"
+            ]
+          },
+          {
+            "group": "RapidBridge (Sync Jobs)",
+            "pages": [
+              "rapid-bridge/overview",
+              "rapid-bridge/creating-sync-jobs"
+            ]
+          },
+          {
+            "group": "RapidForm",
+            "pages": [
+              "rapid-form/overview",
+              "rapid-form/creating-forms",
+              "rapid-form/creating-forms-api",
+              "rapid-form/field-types",
+              "rapid-form/custom-validation",
+              "rapid-form/transform-expressions"
+            ]
+          },
+          {
+            "group": "Workflows",
+            "pages": [
+              "workflows/overview",
+              "workflows/creating-workflows"
+            ]
+          },
+          {
+            "group": "Platform",
+            "pages": [
+              "platform/environments",
+              "platform/team-members",
+              "platform/api-tokens",
+              "platform/agent-tool-calling"
             ]
           }
         ]
       },
       {
-        "tab": "Connection API",
+        "tab": "API Reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Overview",
             "pages": [
               "api-reference/introduction",
-              "connection-api/api-documentation/integrations",
-              "connection-api/api-documentation/api-keys"
+              "api-reference/authentication",
+              "api-reference/pagination",
+              "api-reference/query-parameters",
+              "api-reference/rate-limits",
+              "api-reference/errors"
             ]
           },
           {
-            "group": "Connections API",
+            "group": "Admin API",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/create-copied-1",
-              "api-reference/endpoint/delete"
-            ]
-          },
-          {
-            "group": "Integrations API",
-            "pages": [
-              "api-reference/endpoint-copied-1/get",
-              "api-reference/endpoint-copied-1/create-copied-1"
+              "api-reference/admin/integrated-accounts",
+              "api-reference/admin/integrations",
+              "api-reference/admin/webhooks",
+              "api-reference/admin/sync-jobs",
+              "api-reference/admin/link-tokens"
             ]
           }
-        ]
-      },
-      {
-        "tab": "Embedded Connect UI",
-        "pages": [
-          "embeded-ui/embedded-ui"
         ]
       },
       {
         "tab": "Unified Realtime API",
         "groups": [
           {
-            "group": "Commerce",
+            "group": "Overview",
             "pages": [
-              "unified-commerce-api/overview/sample-page"
+              "unified-realtime/overview"
             ]
           },
           {
             "group": "API Reference",
-            "openapi": "realtime-api.json"
+            "openapi": "unified-realtime-api.json"
           }
         ]
       },
       {
-        "tab": "Unified Cached API",
+        "tab": "Unified Cache API",
         "groups": [
           {
-            "group": "Commerce",
+            "group": "Overview",
             "pages": [
-              "unified-commerce-api/overview-copied-1/sample-page"
+              "unified-cache/overview"
             ]
+          },
+          {
+            "group": "API Reference",
+            "openapi": "unified-cache-api.json"
           }
         ]
       }
     ]
   },
-  "logo": {
-    "light": "/images/Logo_1.png",
-    "dark": "/images/Logo_2.png"
-  },
   "navbar": {
     "links": [
       {
         "label": "Support",
-        "href": "mailto:peter@itshandled.ai"
+        "href": "mailto:support@usehandled.io"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://app.handled.one"
     }
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "linkedin": "https://linkedin.com/company/usehandled"
     }
   },
-  "description": "Handled iPaaS Solution"
+  "api": {
+    "baseUrl": "https://api.usehandled.io/api/v1/ipaas",
+    "auth": {
+      "method": "bearer",
+      "name": "Authorization"
+    }
+  },
+  "description": "Integration infrastructure for commerce. Connect to 150+ ecommerce, WMS, carrier, and logistics services through a single unified API."
 }

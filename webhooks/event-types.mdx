@@ -1,0 +1,76 @@
+---
+title: "Webhook Event Types"
+description: "Complete list of all webhook events"
+---
+
+## Account Events
+
+| Event | Description |
+|-------|-------------|
+| `integrated_account:created` | Account connection started |
+| `integrated_account:active` | Account is ready for use |
+| `integrated_account:updated` | Account details changed |
+| `integrated_account:post_install_error` | Post-install steps failed |
+| `integrated_account:validation_error` | Validation failed |
+| `integrated_account:post_connect_form_submitted` | User submitted RapidForm |
+| `integrated_account:authentication_error` | Credentials invalid or expired |
+| `integrated_account:reactivated` | Account recovered from auth error |
+
+## Sync Job Events
+
+| Event | Description |
+|-------|-------------|
+| `sync_job_run:created` | Sync job run created |
+| `sync_job_run:started` | Sync job started executing |
+| `sync_job_run:record` | Data record received |
+| `sync_job_run:record_error` | Error fetching a record |
+| `sync_job_run:rate_limited` | Hit rate limit, pausing |
+| `sync_job_run:completed` | Sync job finished successfully |
+| `sync_job_run:failed` | Sync job failed |
+| `sync_job_run:updated` | Sync job run updated |
+| `sync_job_run:deleted` | Sync job run deleted |
+
+## Record Events
+
+| Event | Description |
+|-------|-------------|
+| `record:created` | New record in underlying service |
+| `record:updated` | Record changed |
+| `record:deleted` | Record removed |
+
+<Note>
+Record events require webhook configuration on the underlying integration.
+</Note>
+
+## Event Payload Examples
+
+### Account Active
+
+```json
+{
+  "event": "integrated_account:active",
+  "payload": {
+    "id": "acc_123",
+    "tenant_id": "customer_456",
+    "integration": {
+      "name": "shiphero",
+      "label": "ShipHero"
+    }
+  }
+}
+```
+
+### Sync Completed
+
+```json
+{
+  "event": "sync_job_run:completed",
+  "payload": {
+    "id": "run_789",
+    "sync_job_id": "job_123",
+    "integrated_account_id": "acc_456",
+    "records_synced": 150,
+    "duration_ms": 5420
+  }
+}
+```

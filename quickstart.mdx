@@ -1,0 +1,93 @@
+---
+title: "Quickstart"
+description: "Get up and running with Handled in 5 minutes"
+---
+
+## Prerequisites
+
+- A Handled account ([sign up here](https://app.handled.one))
+- An API token from the dashboard
+
+## Step 1: Get Your API Token
+
+1. Log into your [Handled dashboard](https://app.handled.one)
+2. Go to **Settings > API Tokens**
+3. Click **Create API Token**
+4. Copy and store the token securely
+
+<Warning>
+Keep your token secret. Anyone with your token can access your account.
+</Warning>
+
+## Step 2: Install an Integration
+
+1. Go to **Catalog > Integrations** in your dashboard
+2. Find the integration you need (e.g., ShipHero, Shopify)
+3. Click **Install**
+4. Select your environment (Development, Staging, or Production)
+
+## Step 3: Connect an Account
+
+Generate a link token to start the connection flow:
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/link-token' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "tenant_id": "customer-123"
+  }'
+```
+
+Response:
+```json
+{
+  "link_token": "abc123-def456-ghi789"
+}
+```
+
+Open the connection UI:
+```
+https://app.handled.one/connect-account?link_token=abc123-def456-ghi789
+```
+
+## Step 4: Make Your First API Call
+
+Once an account is connected, fetch data using the Unified API:
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/unified/wms/orders?integrated_account_id=ACCOUNT_ID&limit=10' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+Response:
+```json
+{
+  "result": [
+    {
+      "id": "order-123",
+      "status": "pending",
+      "line_items": [...],
+      "shipping_address": {...}
+    }
+  ],
+  "next_cursor": null
+}
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Unified APIs" icon="layer-group" href="/unified-apis/overview">
+    Learn about standardized data access
+  </Card>
+  <Card title="Webhooks" icon="bell" href="/webhooks/overview">
+    Set up real-time notifications
+  </Card>
+  <Card title="Sync Jobs" icon="rotate" href="/rapid-bridge/overview">
+    Automate data synchronization
+  </Card>
+  <Card title="Link SDK" icon="window" href="/link-sdk/overview">
+    Embed the connection UI in your app
+  </Card>
+</CardGroup>

@@ -1,0 +1,148 @@
+---
+title: "Integration Configuration Reference"
+description: "Complete reference for all integration configuration options"
+---
+
+## Authentication Methods
+
+### OAuth 2.0
+
+| Field | Description |
+|-------|-------------|
+| Redirect URL | Where users return after authorization |
+| Client ID | OAuth app identifier |
+| Client Secret | OAuth app secret |
+| Authorization Host | Authorization server URL |
+| Authorization Path | Path to authorization endpoint |
+| Token Host | Token server URL |
+| Token Path | Path to token endpoint |
+| Scopes | Permissions requested |
+| Token Request Format | Header, Body, or Query |
+| Token Expiry | Duration in seconds |
+
+### API Key
+
+| Field | Description |
+|-------|-------------|
+| Scopes | Permissions text to display |
+| Help Text | Instructions for obtaining API key |
+
+Variables automatically added: `api_key` (Password type)
+
+### Client Credentials Flow
+
+| Field | Description |
+|-------|-------------|
+| Token Host | Token server URL |
+| Token Path | Path to token endpoint |
+| Authorization Format | Header, Body, or Query |
+| Body Format | Form, JSON, or Query |
+
+Variables automatically added: `client_id`, `client_secret`
+
+## Variables
+
+| Field | Description |
+|-------|-------------|
+| Name | Internal identifier |
+| Label | Display name for users |
+| Type | Text, Password, or Single Select |
+| Default Value | Pre-filled value |
+| Placeholder | Hint text |
+| Required | Mandatory field |
+| Help Text | Description |
+| Pattern | Regex validation |
+
+## Authorization
+
+### Bearer Auth
+
+```
+Authorization: Bearer {{oauth.token.access_token}}
+```
+
+### Basic Auth
+
+Username and password encoded in header.
+
+### Custom Header
+
+JSONata expression for custom logic.
+
+## Base URL
+
+Supports variables:
+```
+https://{{subdomain}}.api.example.com/v1
+```
+
+## Headers
+
+| Field | Description |
+|-------|-------------|
+| Name | Header name (e.g., `Content-Type`) |
+| Value | Header value (supports variables) |
+
+## Query Parameters
+
+### Array Formats
+
+| Format | Example |
+|--------|---------|
+| Comma | `tags=a,b,c` |
+| Brackets | `tags[]=a&tags[]=b` |
+| Index | `tags[0]=a&tags[1]=b` |
+| Repeat | `tags=a&tags=b` |
+
+## Pagination
+
+### Cursor-Based
+
+| Field | Description |
+|-------|-------------|
+| Cursor Path | Location in response (e.g., `meta.next_cursor`) |
+| Cursor Key | Query parameter name |
+| Is Cursor Link | Whether cursor is a full URL |
+
+### Offset-Based
+
+| Field | Description |
+|-------|-------------|
+| Total Record Path | Location of total count |
+| Offset Key | Query parameter (default: `offset`) |
+| Limit Key | Records per page (default: `limit`) |
+| Max Limit | Maximum page size |
+
+### Page-Based
+
+| Field | Description |
+|-------|-------------|
+| Page Key | Query parameter (default: `page`) |
+| Starting Page | Initial page (default: 1) |
+| Limit Key | Records per page |
+
+## Rate Limiting
+
+JSONata expressions for:
+- `isRateLimited` - Detect rate limit (e.g., check for 429 status)
+- `rateLimitHeaders` - Extract limit, remaining, reset values
+- `retryAfter` - Parse retry delay
+
+## Resources
+
+| Field | Description |
+|-------|-------------|
+| Name | Resource identifier (e.g., `orders`) |
+| Methods | list, get, create, update, delete |
+| Path | Endpoint for each method |
+| Response Path | Location of data in response |
+
+## Actions
+
+| Type | Description |
+|------|-------------|
+| Get Context | Retrieve variable values |
+| Transform | Modify data with JSONata |
+| Update Context | Store computed values |
+| Set Context | Store key-value pairs |
+| Request | Make API calls |

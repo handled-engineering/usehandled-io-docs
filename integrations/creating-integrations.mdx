@@ -1,0 +1,106 @@
+---
+title: "Creating Custom Integrations"
+description: "Build a custom integration when you need to connect to a service not in our catalog"
+---
+
+## Create an Integration
+
+1. Go to **Catalog**
+2. Click **Create Integration**
+
+## Configuration Steps
+
+### Step 1: Basic Details
+
+| Field | Description |
+|-------|-------------|
+| Label | Display name (e.g., "My WMS") |
+| Identifier | Unique code used in URLs and SDK |
+| Category | Optional grouping |
+| Logo | Optional icon for the connection UI |
+
+### Step 2: Authentication
+
+Choose how users authenticate:
+
+<Tabs>
+  <Tab title="OAuth 2.0">
+    **Recommended for most services**
+    - Redirect URL
+    - Client ID and Secret
+    - Authorization endpoint
+    - Token endpoint
+    - Scopes
+  </Tab>
+  <Tab title="API Key">
+    **Simple authentication**
+    - Users provide their API key during connection
+  </Tab>
+  <Tab title="Client Credentials">
+    **Server-to-server OAuth flow**
+    - Token endpoint
+    - Client ID and Secret as variables
+  </Tab>
+</Tabs>
+
+### Step 3: Variables
+
+Define values users provide during connection:
+
+```
+subdomain → Used in base URL: https://{{subdomain}}.example.com
+api_key → Used in headers: Authorization: Bearer {{api_key}}
+```
+
+Variable types: Text, Password, Single Select
+
+### Step 4: Base URL and Headers
+
+Set the API base URL:
+```
+https://{{subdomain}}.api.example.com/v1
+```
+
+Add default headers:
+```
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+```
+
+### Step 5: Pagination
+
+Configure how to handle paginated responses:
+
+| Method | Description |
+|--------|-------------|
+| Cursor | Next page token in response |
+| Offset | Skip N records |
+| Page | Page number parameter |
+| None | Single response, no pagination |
+
+### Step 6: Rate Limiting
+
+Configure rate limit detection:
+- HTTP 429 response handling
+- Retry-After header parsing
+- Custom rate limit expressions
+
+### Step 7: Resources
+
+Define the data types available:
+
+```yaml
+orders:
+  list: GET /orders
+  get: GET /orders/{id}
+  create: POST /orders
+  update: PATCH /orders/{id}
+```
+
+### Step 8: Actions
+
+Automated tasks after account connection:
+
+1. **Get Context** - Retrieve user info
+2. **Transform** - Process data with JSONata
+3. **Update Context** - Store values for later use

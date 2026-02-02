@@ -1,0 +1,132 @@
+---
+title: "Creating Sync Jobs"
+description: "Set up automated data synchronization"
+---
+
+## Step 1: Create a Webhook
+
+Create a webhook to receive sync data:
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/webhook' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "target_url": "https://your-app.com/sync-data",
+    "is_active": true,
+    "event_types": [
+      "sync_job_run:started",
+      "sync_job_run:record",
+      "sync_job_run:completed",
+      "sync_job_run:failed"
+    ]
+  }'
+```
+
+## Step 2: Create a Sync Job
+
+Define which resources to fetch:
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/sync-job' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "integration_name": "shiphero",
+    "resources": [
+      {"resource": "wms/orders", "method": "list"},
+      {"resource": "wms/inventory", "method": "list"}
+    ]
+  }'
+```
+
+### Resource Configuration
+
+| Field | Description |
+|-------|-------------|
+| `resource` | Unified or Proxy API resource |
+| `method` | `list`, `get`, or custom method |
+| `depends_on` | Parent resource for hierarchical data |
+| `query` | Filter parameters |
+
+### Dependencies Example
+
+Fetch order items for each order:
+
+```json
+{
+  "resources": [
+    {"resource": "wms/orders", "method": "list"},
+    {
+      "resource": "wms/order-items",
+      "method": "list",
+      "depends_on": "wms/orders",
+      "query": {"order_id": "{{resources.wms.orders.id}}"}
+    }
+  ]
+}
+```
+
+## Step 3: Run the Sync Job
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/sync-job-run' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "sync_job_id": "JOB_ID",
+    "integrated_account_id": "ACCOUNT_ID",
+    "webhook_id": "WEBHOOK_ID"
+  }'
+```
+
+## Advanced Options
+
+### Error Handling
+
+```json
+{
+  "error_handling": "ignore"
+}
+```
+
+| Option | Behavior |
+|--------|----------|
+| `ignore` (default) | Continue on errors |
+| `fail_fast` | Stop on first error |
+
+### Incremental Syncs
+
+Fetch only changed records:
+
+```json
+{
+  "resource": "wms/orders",
+  "method": "list",
+  "query": {"updated_at": {"gt": "{{previous_run_date}}"}}
+}
+```
+
+### Scheduled Syncs
+
+Create a cron trigger for recurring syncs:
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/sync-job-cron-trigger' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "sync_job_id": "JOB_ID",
+    "integrated_account_id": "ACCOUNT_ID",
+    "webhook_id": "WEBHOOK_ID",
+    "cron_expression": "0 */6 * * *"
+  }'
+```
+
+<Note>
+Cron expressions use UTC timezone.
+</Note>
+
+### Auto-Trigger on Account Connection
+
+Listen for `integrated_account:active` webhooks to automatically start syncs when accounts connect.

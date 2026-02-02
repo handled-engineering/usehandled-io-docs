@@ -1,0 +1,80 @@
+---
+title: "Transform Expressions"
+description: "Modify form data before saving to the account"
+---
+
+## Enable Transforms
+
+<Steps>
+  <Step title="Add Fields">
+    Add your form fields
+  </Step>
+  <Step title="Enable">
+    Toggle **Transform data before saving**
+  </Step>
+</Steps>
+
+## Write Transform Expression
+
+Use JSONata to modify the form data. The expression should return the transformed object.
+
+### Example: Add Computed Field
+
+Count selected projects and add timestamp:
+
+```jsonata
+$merge([
+  $,
+  {
+    "total_projects": $count(projects),
+    "configured_at": $now()
+  }
+])
+```
+
+**Input:**
+```json
+{
+  "warehouse_id": "wh-123",
+  "projects": [{"value": "1"}, {"value": "2"}]
+}
+```
+
+**Output:**
+```json
+{
+  "warehouse_id": "wh-123",
+  "projects": [{"value": "1"}, {"value": "2"}],
+  "total_projects": 2,
+  "configured_at": "2024-01-15T10:30:00Z"
+}
+```
+
+### Example: Flatten Values
+
+Extract just the IDs from selections:
+
+```jsonata
+{
+  "warehouse_id": warehouse_id,
+  "project_ids": projects.value
+}
+```
+
+**Output:**
+```json
+{
+  "warehouse_id": "wh-123",
+  "project_ids": ["1", "2"]
+}
+```
+
+## Common Functions
+
+| Function | Description |
+|----------|-------------|
+| `$merge([a, b])` | Combine objects |
+| `$count(array)` | Count items |
+| `$now()` | Current timestamp |
+| `$sum(array)` | Sum numbers |
+| `$join(array, sep)` | Join strings |

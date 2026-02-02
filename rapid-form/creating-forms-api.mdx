@@ -1,0 +1,87 @@
+---
+title: "Creating RapidForm via API"
+description: "Configure forms programmatically"
+---
+
+## Form Structure
+
+```json
+{
+  "type": "form",
+  "config": {
+    "fields": [
+      {
+        "name": "warehouse_id",
+        "type": "single_select",
+        "label": "Warehouse",
+        "required": true,
+        "data_source": {
+          "type": "unified",
+          "resource": "wms/warehouses",
+          "method": "list"
+        },
+        "options": {
+          "label": "name",
+          "value": "id"
+        }
+      }
+    ]
+  }
+}
+```
+
+## Add RapidForm to Integration
+
+### Step 1: Get Integration ID
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/environment-integration?integration.name=shiphero' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+### Step 2: Add Form Configuration
+
+```bash
+curl -X PATCH 'https://api.usehandled.io/api/v1/ipaas/environment-integration/INTEGRATION_ID' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "override": {
+      "actions": {
+        "post_connect_user_form": {
+          "steps": [{
+            "type": "form",
+            "config": {
+              "fields": [...]
+            }
+          }]
+        }
+      }
+    }
+  }'
+```
+
+## Field Configuration
+
+| Field | Description |
+|-------|-------------|
+| `name` | Variable name to store |
+| `type` | `single_select`, `multi_select`, `text`, `password`, `checkbox`, `hidden` |
+| `label` | Display name |
+| `help_text` | Description |
+| `required` | Must be filled |
+| `depends_on` | Parent field names |
+| `data_source` | API configuration |
+| `options` | Label and value field mapping |
+| `disabled_text` | Message when disabled |
+
+## Using Form Values in Sync Jobs
+
+Reference stored values with placeholders:
+
+```json
+{
+  "resource": "wms/orders",
+  "query": {"warehouse_id": "{{warehouse_id}}"}
+}
+```

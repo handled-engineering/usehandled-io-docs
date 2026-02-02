@@ -1,0 +1,71 @@
+---
+title: "Customizing Integrations"
+description: "Modify installed integrations to fit your needs"
+---
+
+## What You Can Customize
+
+- OAuth credentials (use your own app)
+- RapidForm configuration
+- Custom resources
+- Environment-specific settings
+
+## Override OAuth Credentials
+
+Use your own OAuth app instead of Handled's default:
+
+<Steps>
+  <Step title="Open Settings">
+    Go to **Integrations > Installed** and select the integration
+  </Step>
+  <Step title="Enable Override">
+    Click **Settings** and toggle **Use your own OAuth credentials**
+  </Step>
+  <Step title="Enter Credentials">
+    Enter your Client ID, Client Secret, and Scopes
+  </Step>
+  <Step title="Save">
+    Click **Save**
+  </Step>
+</Steps>
+
+Your customers will see your OAuth app name during authorization.
+
+## Add Custom RapidForm
+
+Collect additional data from users during connection:
+
+1. Navigate to the integration settings
+2. Enable RapidForm
+3. Configure fields to collect (workspace selection, tag filters, etc.)
+
+See the [RapidForm documentation](/rapid-form/overview) for details.
+
+## Add Custom Resources
+
+Extend an integration with resources not in the default configuration:
+
+<Steps>
+  <Step title="Edit Integration">
+    Go to **Integrations** and click **Edit**
+  </Step>
+  <Step title="Add Resource">
+    Scroll to **Resources** and click **Add Resource**
+  </Step>
+  <Step title="Configure">
+    Configure resource name, HTTP methods, endpoint paths, and response mapping
+  </Step>
+  <Step title="Save">
+    Save the changes
+  </Step>
+</Steps>
+
+## Other Customizable Settings
+
+| Setting | Description |
+|---------|-------------|
+| Variables | Add custom variables for API keys, subdomains |
+| Headers | Modify default request headers |
+| Query parameters | Set default query params |
+| Pagination | Override pagination method |
+| Error handling | Custom error expressions |

@@ -1,0 +1,109 @@
+---
+title: "Query Parameters"
+description: "Filter, sort, and customize API responses"
+---
+
+## Basic Types
+
+**Strings:**
+```
+name=acme
+```
+
+**Numbers:**
+```
+limit=25
+```
+
+**Booleans:**
+```
+is_active=true
+```
+
+## Objects
+
+Use bracket notation for nested values:
+
+```
+filter[status]=active&filter[type]=customer
+```
+
+Equivalent JSON:
+```json
+{
+  "filter": {
+    "status": "active",
+    "type": "customer"
+  }
+}
+```
+
+## Arrays
+
+Use empty brackets for array items:
+
+```
+tags[]=urgent&tags[]=billing
+```
+
+Equivalent JSON:
+```json
+{
+  "tags": ["urgent", "billing"]
+}
+```
+
+## Dates
+
+Use ISO 8601 format:
+
+```
+created_at[gte]=2024-01-01T00:00:00Z&created_at[lte]=2024-01-31T23:59:59Z
+```
+
+## Sorting
+
+```
+sort_by[created_at]=desc
+sort_by[name]=asc
+```
+
+## Comparison Operators
+
+| Operator | Meaning |
+|----------|---------|
+| `eq` | Equal |
+| `ne` | Not equal |
+| `gt` | Greater than |
+| `gte` | Greater than or equal |
+| `lt` | Less than |
+| `lte` | Less than or equal |
+| `in` | In list |
+| `nin` | Not in list |
+| `like` | Pattern match |
+
+**Examples:**
+```
+status[ne]=closed
+amount[gte]=100
+type[in][]=lead&type[in][]=customer
+```
+
+## Remote Query Parameters
+
+Pass parameters directly to the underlying API:
+
+```
+remote_query[custom_field]=value
+```
+
+<Note>
+Remote parameters take precedence over unified parameters and are passed directly to the underlying service.
+</Note>
+
+## Full Example
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/unified/crm/contacts?integrated_account_id=ACCOUNT_ID&status[eq]=active&created_at[gte]=2024-01-01T00:00:00Z&sort_by[created_at]=desc&limit=50' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```

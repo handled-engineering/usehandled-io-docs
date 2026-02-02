@@ -1,0 +1,79 @@
+---
+title: "Integrations API"
+description: "Manage installed integrations programmatically"
+---
+
+## List Installed Integrations
+
+Retrieve all integrations installed in your environment.
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/environment-integration' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+### Response
+
+```json
+{
+  "result": [
+    {
+      "id": "int_123",
+      "integration": {
+        "name": "shiphero",
+        "label": "ShipHero",
+        "category": "wms"
+      },
+      "is_enabled": true,
+      "created_at": "2024-01-15T10:30:00Z"
+    }
+  ],
+  "next_cursor": null
+}
+```
+
+## Get Integration
+
+Retrieve a specific installed integration.
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/environment-integration/{integration_id}' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Update Integration Settings
+
+Modify integration configuration like OAuth credentials or RapidForm settings.
+
+```bash
+curl -X PATCH 'https://api.usehandled.io/api/v1/ipaas/environment-integration/{integration_id}' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "override": {
+      "oauth": {
+        "client_id": "your-client-id",
+        "client_secret": "your-client-secret",
+        "scopes": ["read", "write"]
+      }
+    }
+  }'
+```
+
+## Enable/Disable Integration
+
+```bash
+curl -X PATCH 'https://api.usehandled.io/api/v1/ipaas/environment-integration/{integration_id}' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "is_enabled": false
+  }'
+```
+
+## Filter by Integration Name
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/environment-integration?integration.name=shiphero' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```

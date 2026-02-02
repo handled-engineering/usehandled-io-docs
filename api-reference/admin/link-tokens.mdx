@@ -1,0 +1,82 @@
+---
+title: "Link Tokens API"
+description: "Generate link tokens for account connections"
+---
+
+## Create Link Token
+
+Generate a token to start the account connection flow.
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/link-token' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "tenant_id": "customer-123"
+  }'
+```
+
+### Parameters
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `tenant_id` | string | Your customer's identifier |
+| `integrated_account_id` | string | Optional. For reauthorizing existing accounts |
+| `integration_name` | string | Optional. Pre-select a specific integration |
+
+### Response
+
+```json
+{
+  "link_token": "abc123-def456-ghi789"
+}
+```
+
+## Usage Options
+
+### Embedded SDK
+
+Use the Link SDK to open a popup:
+
+```javascript
+import authenticate from '@handled/link-sdk';
+
+authenticate('abc123-def456-ghi789')
+  .then(response => console.log('Connected:', response))
+  .catch(error => console.error('Error:', error));
+```
+
+### Magic Link
+
+Generate a shareable URL:
+
+```
+https://app.handled.one/connect-account?link_token=abc123-def456-ghi789
+```
+
+## Reauthorize Existing Account
+
+Generate a token to refresh credentials for an existing account:
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/link-token' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "integrated_account_id": "acc_456"
+  }'
+```
+
+## Pre-Select Integration
+
+Direct users to a specific integration:
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/link-token' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "tenant_id": "customer-123",
+    "integration_name": "shiphero"
+  }'
+```

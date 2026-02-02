@@ -1,0 +1,79 @@
+---
+title: "Integrated Accounts"
+description: "Manage connections to external services"
+---
+
+## What Are Integrated Accounts?
+
+Integrated Accounts represent connections to external services. When a user connects their Shopify store, ShipHero account, or FedEx credentials, an Integrated Account is created.
+
+## View Connected Accounts
+
+```
+https://app.handled.one/integrated-accounts
+```
+
+Each account shows:
+
+| Field | Description |
+|-------|-------------|
+| **Account ID** | Unique identifier |
+| **Tenant ID** | Your customer identifier |
+| **Integration** | The connected service |
+| **Connected On** | When the connection was made |
+
+## Connect via API
+
+Generate a link token to start the connection flow:
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/link-token' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "tenant_id": "customer-123"
+  }'
+```
+
+Response:
+```json
+{
+  "link_token": "abc123-def456-ghi789"
+}
+```
+
+Use the token to open the connection UI:
+```
+https://app.handled.one/connect-account?link_token={link_token}
+```
+
+## Connect via Dashboard
+
+<Steps>
+  <Step title="Open Integrated Accounts">
+    Go to **Integrated Accounts**
+  </Step>
+  <Step title="Start Connection">
+    Click **Connect Account**
+  </Step>
+  <Step title="Enter Tenant ID">
+    Enter a Tenant ID (your customer's identifier)
+  </Step>
+  <Step title="Get Link">
+    Click **Get connection link**
+  </Step>
+  <Step title="Share or Open">
+    Share the link or open it to connect
+  </Step>
+</Steps>
+
+## Embed in Your Application
+
+Use the Link SDK to embed the connection flow in your app. See the [Link SDK documentation](/link-sdk/overview) for details.
+
+## What You Can Do
+
+With a connected account:
+- **Make API calls** - Use Unified and Proxy APIs
+- **View logs** - Monitor API activity
+- **Run sync jobs** - Automate data synchronization

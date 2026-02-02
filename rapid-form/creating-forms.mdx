@@ -1,0 +1,87 @@
+---
+title: "Creating RapidForms"
+description: "Configure forms to collect user input during connection"
+---
+
+## Enable RapidForm
+
+<Steps>
+  <Step title="Open Settings">
+    Go to your integration settings
+  </Step>
+  <Step title="Enable">
+    Enable **RapidForm**
+  </Step>
+</Steps>
+
+## Add Fields
+
+### Example: Warehouse Selection
+
+**Field 1: Warehouse**
+
+| Setting | Value |
+|---------|-------|
+| Name | `warehouse_id` |
+| Label | Warehouse |
+| Type | Single Select |
+| Data Source | Unified API |
+| Resource | `wms/warehouses` |
+| Method | `list` |
+
+### Example: Project Selection (with dependency)
+
+**Field 2: Projects**
+
+| Setting | Value |
+|---------|-------|
+| Name | `projects` |
+| Label | Projects |
+| Type | Multi Select |
+| Depends On | `warehouse_id` |
+| Data Source | Unified API |
+| Resource | `wms/projects` |
+| Query | `{"warehouse_id": "{{warehouse_id}}"}` |
+| Reset on Change | Yes |
+
+## How Dependencies Work
+
+1. User selects a warehouse
+2. Projects field fetches projects for that warehouse
+3. If warehouse changes, projects reset and reload
+
+## Field Configuration Options
+
+| Option | Description |
+|--------|-------------|
+| Name | Variable name stored in account |
+| Label | Display name for users |
+| Help Text | Description shown below field |
+| Required | Must be filled before submit |
+| Depends On | Parent field(s) |
+| Reset on Change | Clear when parent changes |
+
+## Data Source Options
+
+| Option | Description |
+|--------|-------------|
+| Request Type | Unified API or Proxy API |
+| Resource | API endpoint |
+| Method | `list` or `get` |
+| Query | Filter parameters |
+| Label Attribute | Field to display (default: `label`) |
+| Value Attribute | Field to store (default: `value`) |
+
+## Using Form Values
+
+Stored values are available as variables:
+
+**In sync jobs:**
+```json
+{"warehouse_id": "{{warehouse_id}}"}
+```
+
+**In API calls:**
+```
+?warehouse_id={{warehouse_id}}
+```

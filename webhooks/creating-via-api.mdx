@@ -1,0 +1,71 @@
+---
+title: "Creating Webhooks via API"
+description: "Set up webhooks programmatically"
+---
+
+## Create a Webhook
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/webhook' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "target_url": "https://your-app.com/webhooks/handled",
+    "is_active": true,
+    "event_types": ["integrated_account:created", "sync_job_run:completed"]
+  }'
+```
+
+### Parameters
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `target_url` | string | Your HTTPS endpoint |
+| `is_active` | boolean | Enable/disable the webhook |
+| `event_types` | array | Events to receive (omit for all events) |
+
+### Response
+
+```json
+{
+  "id": "webhook_123",
+  "target_url": "https://your-app.com/webhooks/handled",
+  "secret": "whsec_abc123...",
+  "is_active": true,
+  "environment_id": "env_456",
+  "created_at": "2024-01-15T10:30:00Z"
+}
+```
+
+<Warning>
+Save the `secret` value. You need it to verify webhook signatures.
+</Warning>
+
+## Test a Webhook
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/webhook/test' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "id": "webhook_123"
+  }'
+```
+
+## Update a Webhook
+
+```bash
+curl -X PATCH 'https://api.usehandled.io/api/v1/ipaas/webhook/webhook_123' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "is_active": false
+  }'
+```
+
+## Delete a Webhook
+
+```bash
+curl -X DELETE 'https://api.usehandled.io/api/v1/ipaas/webhook/webhook_123' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```

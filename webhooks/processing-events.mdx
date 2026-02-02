@@ -1,0 +1,85 @@
+---
+title: "Processing Webhook Events"
+description: "Handle and verify incoming webhook events"
+---
+
+## Event Payload
+
+```json
+{
+  "id": "event_123",
+  "event": "integrated_account:active",
+  "payload": {
+    "id": "account_456",
+    "integration": "shiphero",
+    "tenant_id": "customer_789"
+  },
+  "environment_id": "env_123",
+  "created_at": "2024-01-15T10:30:00Z",
+  "webhook_id": "webhook_456"
+}
+```
+
+### Fields
+
+| Field | Description |
+|-------|-------------|
+| `id` | Unique event identifier |
+| `event` | Event type (e.g., `integrated_account:active`) |
+| `payload` | Event data |
+| `environment_id` | Your environment |
+| `created_at` | When the event occurred |
+| `webhook_id` | Which webhook received this |
+
+## Verifying Signatures
+
+The `X-Handled-Signature` header contains a signed hash of the request body.
+
+### Node.js Example
+
+```javascript
+const crypto = require('crypto');
+
+function verifySignature(body, signature, secret) {
+  const expected = crypto
+    .createHmac('sha256', secret)
+    .update(body, 'utf8')
+    .digest('base64url');
+
+  return crypto.timingSafeEquals(
+    Buffer.from(signature),
+    Buffer.from(expected)
+  );
+}
+
+// In your Express handler
+app.post('/webhooks/handled', express.raw({type: 'application/json'}), (req, res) => {
+  const signature = req.headers['x-handled-signature'];
+
+  if (!verifySignature(req.body, signature, WEBHOOK_SECRET)) {
+    return res.status(401).send('Invalid signature');
+  }
+
+  const event = JSON.parse(req.body);
+
+  // Process the event based on type
+  switch (event.event) {
+    case 'integrated_account:active':
+      handleAccountActive(event.payload);
+      break;
+    case 'sync_job_run:completed':
+      handleSyncComplete(event.payload);
+      break;
+    // Handle other events...
+  }
+
+  res.status(200).send('OK');
+});
+```
+
+### Important
+
+<Warning>
+- Use the **raw request body** for signature verification, not parsed JSON
+- Check the `created_at` timestamp to prevent replay attacks
+</Warning>

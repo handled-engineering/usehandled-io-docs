@@ -1,0 +1,72 @@
+---
+title: "Reauthorizing Connections"
+description: "Refresh credentials when they expire or become invalid"
+---
+
+## When Reauthorization is Needed
+
+- OAuth tokens expire
+- User revokes access
+- API keys are rotated
+- Permissions change
+
+## Detecting Auth Issues
+
+**Webhook event:** `integrated_account:authentication_error`
+
+This event is sent when:
+- OAuth token refresh fails
+- API call returns 401 Unauthorized
+
+## Reauthorize via Dashboard
+
+<Steps>
+  <Step title="Open Account">
+    Go to **Integrated Accounts** and select the account
+  </Step>
+  <Step title="Start Reauthorization">
+    Click **Reauthorize connection**
+  </Step>
+  <Step title="Get Link">
+    Click **Get connection link**
+  </Step>
+  <Step title="Complete">
+    Complete the authorization flow
+  </Step>
+</Steps>
+
+## Reauthorize via API
+
+Generate a link token for the existing account:
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/link-token' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "integrated_account_id": "ACCOUNT_ID"
+  }'
+```
+
+Use the token to open the reauthorization UI:
+```
+https://app.handled.one/connect-account?link_token={link_token}
+```
+
+## Embed in Your App
+
+Use the Link SDK with the existing account ID to prompt users to reauthorize.
+
+```javascript
+import authenticate from '@handled/link-sdk';
+
+authenticate(linkToken)
+  .then(response => console.log('Reauthorized:', response))
+  .catch(error => console.error('Error:', error));
+```
+
+## After Reauthorization
+
+**Webhook event:** `integrated_account:reactivated`
+
+The account status returns to active and API calls work again.
