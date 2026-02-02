@@ -17,9 +17,9 @@
           "href": "https://ipaas.usehandled.io"
         },
         {
-          "anchor": "Blog",
-          "icon": "newspaper",
-          "href": "https://usehandled.io/"
+          "anchor": "API Key",
+          "icon": "key",
+          "href": "https://ipaas.usehandled.io/"
         }
       ]
     },
