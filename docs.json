@@ -14,12 +14,12 @@
         {
           "anchor": "Documentation",
           "icon": "book-open-cover",
-          "href": "https://mintlify.com/docs"
+          "href": "https://ipaas.usehandled.io"
         },
         {
           "anchor": "Blog",
           "icon": "newspaper",
-          "href": "https://mintlify.com/blog"
+          "href": "https://usehandled.io/"
         }
       ]
     },
