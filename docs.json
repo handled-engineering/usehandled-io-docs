@@ -194,6 +194,21 @@
             "openapi": "unified-cache-api.json"
           }
         ]
+      },
+      {
+        "tab": "Inference Model",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "unified-cache-copied-1/overview"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "openapi": "unified-cache-api.json"
+          }
+        ]
       }
     ]
   },

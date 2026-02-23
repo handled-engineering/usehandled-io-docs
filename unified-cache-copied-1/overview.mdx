@@ -1,0 +1,92 @@
+---
+title: "Inference Model"
+description: "Access cached data from connected accounts for faster bulk operations"
+---
+
+## Overview
+
+The Unified Cache API provides access to cached data from your connected accounts. Data is synchronized periodically, enabling fast bulk queries without hitting underlying service rate limits.
+
+## Base URL
+
+```
+https://api.usehandled.io/api/v1/ipaas/unified_cache
+```
+
+## Authentication
+
+All requests require a Bearer token:
+
+```
+Authorization: Bearer YOUR_API_TOKEN
+```
+
+## Required Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| `integrated_account_id` | The connected account to query |
+
+## Available Resources
+
+The Unified Cache API supports the following commerce primitives:
+
+| Resource | Description |
+|----------|-------------|
+| Orders | Customer purchases with line items, pricing, shipping, and financial data |
+| Products | SKUs, descriptions, pricing, dimensions, and attributes |
+| Inventory | Stock levels across warehouses and fulfillment centers |
+| Customers | Buyer information, preferences, and purchase history |
+| Fulfillment Orders | Order allocations to locations/fulfillment partners |
+| Fulfillment Shipments | Shipping confirmations with carrier and tracking info |
+| Returns | RMA requests flowing to warehouses for processing |
+| Refunds | Approved refund records triggering credits |
+| Trackings | Shipment tracking with carrier and delivery status |
+
+## Example Request
+
+```bash
+curl 'https://api.usehandled.io/api/v1/ipaas/unified_cache/orders?integrated_account_id=ACCOUNT_ID&limit=100' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Example Response
+
+```json
+{
+  "result": [
+    {
+      "id": "order_123",
+      "status": "pending",
+      "line_items": [...],
+      "shipping_address": {...},
+      "created_at": "2024-01-15T10:30:00Z",
+      "cached_at": "2024-01-15T11:00:00Z"
+    }
+  ],
+  "next_cursor": "abc123"
+}
+```
+
+## Cache Freshness
+
+<Note>
+The `cached_at` field indicates when the data was last synchronized. Set up sync jobs to control cache refresh frequency.
+</Note>
+
+## When to Use Cache API
+
+<CardGroup cols={2}>
+  <Card title="Use Cached When" icon="database">
+    - Bulk data operations
+    - Historical analysis
+    - Reducing API calls to underlying services
+    - Working with rate-limited integrations
+  </Card>
+  <Card title="Use Realtime When" icon="bolt">
+    - You need current data immediately
+    - Building dashboards or reports
+    - Single record lookups
+    - Real-time order management
+  </Card>
+</CardGroup>
