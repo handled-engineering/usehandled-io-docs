@@ -196,12 +196,13 @@
         ]
       },
       {
-        "tab": "Inference Model",
+        "tab": "AI Models",
         "groups": [
           {
             "group": "Overview",
             "pages": [
-              "unified-cache-copied-1/overview"
+              "unified-cache-copied-1/overview",
+              "unified-cache-copied-1/overview-copied-1"
             ]
           },
           {
