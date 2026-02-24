@@ -201,13 +201,12 @@
           {
             "group": "Overview",
             "pages": [
-              "unified-cache-copied-1/overview",
-              "unified-cache-copied-1/overview-copied-1"
+              "opic/overview"
             ]
           },
           {
             "group": "API Reference",
-            "openapi": "unified-cache-api.json"
+            "openapi": "opic-api.json"
           }
         ]
       }

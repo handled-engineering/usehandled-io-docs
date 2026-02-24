@@ -1,0 +1,101 @@
+---
+title: "OPIC (Operations Intent Classifier)"
+description: "Multi-class intent classification for ecommerce customer messages"
+---
+
+## Overview
+
+OPIC (Operations Intent Classifier) is an AI model that analyzes incoming customer messages and conversations to predict the underlying intent. It is designed for use in customer support pipelines, chatbots, and operational routing systems within ecommerce platforms.
+
+**Use cases:**
+- Automatically route support tickets to the right team
+- Trigger order management workflows based on customer messages
+- Provide real-time intent signals to live agents
+- Power chatbot response selection
+
+## Base URL
+
+```
+https://api.usehandled.io/api/v1/ipaas/inference
+```
+
+## Authentication
+
+All requests require a Bearer token:
+
+```
+Authorization: Bearer YOUR_API_TOKEN
+```
+
+## Supported Intents
+
+| Intent Label | Description | Example Message |
+|---|---|---|
+| `track_order` | Customer wants to know shipment/delivery status | "Where is my package?" |
+| `cancel_order` | Customer wants to cancel an existing order | "I need to cancel my order ASAP" |
+| `return_item` | Customer wants to return a product | "How do I return this item?" |
+| `refund_request` | Customer is asking about a refund | "When will I get my money back?" |
+| `product_inquiry` | Customer asking about a product | "Does this come in size L?" |
+| `change_address` | Customer wants to update delivery address | "Can I change my shipping address?" |
+| `payment_issue` | Customer reporting a payment problem | "My card was charged twice" |
+| `complaint` | General complaint or negative feedback | "This is the worst experience ever" |
+| `compliment` | Positive feedback | "Your team was super helpful!" |
+| `other` | Intent does not match any known category | — |
+
+## Example Request
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/inference/intent-classify' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "message": "I placed an order yesterday but I want to cancel it now",
+    "top_k": 3,
+    "threshold": 0.05
+  }'
+```
+
+## Example Response
+
+```json
+{
+  "request_id": "req_a1b2c3d4",
+  "message": "I placed an order yesterday but I want to cancel it now",
+  "predictions": [
+    {
+      "intent": "cancel_order",
+      "confidence": 0.91
+    },
+    {
+      "intent": "track_order",
+      "confidence": 0.06
+    },
+    {
+      "intent": "refund_request",
+      "confidence": 0.02
+    }
+  ],
+  "top_intent": "cancel_order",
+  "latency_ms": 48,
+  "model_version": "1.0.0"
+}
+```
+
+## Model Details
+
+| Property | Value |
+|---|---|
+| Architecture | Fine-tuned transformer (BERT-based) |
+| Training data | Ecommerce customer support conversations |
+| Number of intent classes | 10 |
+| Max input length | 2,048 characters |
+| Supported languages | English |
+| Average latency | < 60ms (p95) |
+
+## Rate Limits
+
+| Plan | Requests / minute | Batch size limit |
+|---|---|---|
+| Starter | 60 | 10 |
+| Growth | 300 | 50 |
+| Enterprise | Unlimited | 100 |

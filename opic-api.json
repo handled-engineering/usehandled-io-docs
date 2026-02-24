@@ -1,0 +1,374 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "OPIC (Operations Intent Classifier) API",
+    "description": "Multi-class intent classification for ecommerce customer messages. Analyze incoming customer messages and conversations to predict the underlying intent for customer support pipelines, chatbots, and operational routing systems.",
+    "version": "1.0.0",
+    "contact": {
+      "email": "support@usehandled.io"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.usehandled.io/api/v1/ipaas/inference",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/intent-classify": {
+      "post": {
+        "summary": "Classify Intent",
+        "description": "Accepts a customer message or conversation and returns the predicted intent with confidence scores.",
+        "operationId": "classifyIntent",
+        "tags": ["Intent Classification"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntentClassifyRequest"
+              },
+              "example": {
+                "message": "I placed an order yesterday but I want to cancel it now",
+                "conversation_history": [
+                  { "role": "customer", "text": "Hi, I need some help with my order" },
+                  { "role": "agent", "text": "Of course! What can I help you with?" }
+                ],
+                "top_k": 3,
+                "threshold": 0.05
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful classification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntentClassifyResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/InvalidRequest"},
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "422": {"$ref": "#/components/responses/MessageTooLong"},
+          "429": {"$ref": "#/components/responses/RateLimited"},
+          "500": {"$ref": "#/components/responses/InternalError"}
+        }
+      }
+    },
+    "/intent-classify/batch": {
+      "post": {
+        "summary": "Batch Classify",
+        "description": "Classify multiple messages in a single request. Maximum 100 messages per request.",
+        "operationId": "batchClassifyIntent",
+        "tags": ["Intent Classification"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchClassifyRequest"
+              },
+              "example": {
+                "messages": [
+                  { "id": "msg_001", "message": "Where is my order?" },
+                  { "id": "msg_002", "message": "I want a refund for order #4521" },
+                  { "id": "msg_003", "message": "Do you have this in blue?" }
+                ],
+                "top_k": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful batch classification",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchClassifyResponse"
+                }
+              }
+            }
+          },
+          "400": {"$ref": "#/components/responses/InvalidRequest"},
+          "401": {"$ref": "#/components/responses/Unauthorized"},
+          "413": {"$ref": "#/components/responses/PayloadTooLarge"},
+          "429": {"$ref": "#/components/responses/RateLimited"},
+          "500": {"$ref": "#/components/responses/InternalError"}
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "API token from your Handled dashboard"
+      }
+    },
+    "schemas": {
+      "IntentClassifyRequest": {
+        "type": "object",
+        "required": ["message"],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The customer message or text to classify",
+            "maxLength": 2048
+          },
+          "conversation_history": {
+            "type": "array",
+            "description": "Prior turns in the conversation for context",
+            "items": {
+              "type": "object",
+              "properties": {
+                "role": {
+                  "type": "string",
+                  "enum": ["customer", "agent"],
+                  "description": "The role of the message sender"
+                },
+                "text": {
+                  "type": "string",
+                  "description": "The message content"
+                }
+              }
+            }
+          },
+          "top_k": {
+            "type": "integer",
+            "description": "Number of top intents to return",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 5
+          },
+          "threshold": {
+            "type": "number",
+            "description": "Minimum confidence score to include in results",
+            "default": 0.0,
+            "minimum": 0.0,
+            "maximum": 1.0
+          }
+        }
+      },
+      "IntentClassifyResponse": {
+        "type": "object",
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "description": "Unique identifier for the inference request"
+          },
+          "message": {
+            "type": "string",
+            "description": "The input message that was classified"
+          },
+          "predictions": {
+            "type": "array",
+            "description": "Ranked list of intent predictions",
+            "items": {
+              "$ref": "#/components/schemas/IntentPrediction"
+            }
+          },
+          "top_intent": {
+            "type": "string",
+            "description": "The highest-confidence intent",
+            "enum": ["track_order", "cancel_order", "return_item", "refund_request", "product_inquiry", "change_address", "payment_issue", "complaint", "compliment", "other"]
+          },
+          "latency_ms": {
+            "type": "integer",
+            "description": "Server-side inference time in milliseconds"
+          },
+          "model_version": {
+            "type": "string",
+            "description": "Version of the model used"
+          }
+        }
+      },
+      "IntentPrediction": {
+        "type": "object",
+        "properties": {
+          "intent": {
+            "type": "string",
+            "description": "Intent label",
+            "enum": ["track_order", "cancel_order", "return_item", "refund_request", "product_inquiry", "change_address", "payment_issue", "complaint", "compliment", "other"]
+          },
+          "confidence": {
+            "type": "number",
+            "description": "Confidence score between 0.0 and 1.0",
+            "minimum": 0.0,
+            "maximum": 1.0
+          }
+        }
+      },
+      "BatchClassifyRequest": {
+        "type": "object",
+        "required": ["messages"],
+        "properties": {
+          "messages": {
+            "type": "array",
+            "description": "List of message objects (max 100 per request)",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "required": ["id", "message"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier for the message"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "The message text to classify",
+                  "maxLength": 2048
+                }
+              }
+            }
+          },
+          "top_k": {
+            "type": "integer",
+            "description": "Number of top intents per message",
+            "default": 1,
+            "minimum": 1,
+            "maximum": 5
+          }
+        }
+      },
+      "BatchClassifyResponse": {
+        "type": "object",
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "description": "Unique identifier for the batch request"
+          },
+          "results": {
+            "type": "array",
+            "description": "Classification results for each message",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "The message ID from the request"
+                },
+                "top_intent": {
+                  "type": "string",
+                  "description": "The highest-confidence intent"
+                },
+                "confidence": {
+                  "type": "number",
+                  "description": "Confidence score for the top intent"
+                }
+              }
+            }
+          },
+          "latency_ms": {
+            "type": "integer",
+            "description": "Server-side inference time in milliseconds"
+          },
+          "model_version": {
+            "type": "string",
+            "description": "Version of the model used"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message"
+          },
+          "request_id": {
+            "type": "string",
+            "description": "Request identifier for debugging"
+          }
+        }
+      }
+    },
+    "responses": {
+      "InvalidRequest": {
+        "description": "Malformed request body or missing required fields",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "INVALID_REQUEST",
+              "message": "Missing required field: message",
+              "request_id": "req_err_001"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Missing or invalid API token",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "error": "UNAUTHORIZED",
+              "message": "Invalid or expired API token",
+              "request_id": "req_err_002"
+            }
+          }
+        }
+      },
+      "PayloadTooLarge": {
+        "description": "Batch request exceeds 100 messages",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "MessageTooLong": {
+        "description": "Input message exceeds 2,048 characters",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "Too many requests - check rate limits",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Unexpected server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      }
+    }
+  }
+}
