@@ -1,0 +1,133 @@
+---
+title: "Operation Taxonomy Explorer"
+description: "Explore and navigate the OPIC operation intent taxonomy"
+---
+
+## Overview
+
+The Operation Taxonomy Explorer allows you to browse and understand the hierarchical intent classification taxonomy used by OPIC. Select a taxonomy version and explore the tree structure to understand how customer intents are organized and classified.
+
+## Using the Explorer
+
+1. **Select Taxonomy Version**: Choose the taxonomy version you want to explore from the dropdown
+2. **Explore the Tree**: Click on any node to expand and view its children
+3. **View Intent Details**: Select a leaf node to see the full intent definition and examples
+
+## Interactive Explorer
+
+<Note>
+The taxonomy tree is initially collapsed. Click on any category to expand and explore its sub-intents.
+</Note>
+
+### Select Version
+
+| Version | Release Date | Intents | Status |
+|---------|--------------|---------|--------|
+| 1.0 | 2024-01 | 10 | Current |
+
+### Taxonomy Tree
+
+```
+Operations Taxonomy v1.0 (click to expand)
+├── Order Management
+│   ├── track_order
+│   ├── cancel_order
+│   └── change_address
+├── Returns & Refunds
+│   ├── return_item
+│   └── refund_request
+├── Product
+│   └── product_inquiry
+├── Payment
+│   └── payment_issue
+├── Feedback
+│   ├── complaint
+│   └── compliment
+└── other
+```
+
+## Intent Definitions
+
+### Order Management
+
+| Intent | Description | Example Messages |
+|--------|-------------|------------------|
+| `track_order` | Customer wants to know shipment/delivery status | "Where is my package?", "When will my order arrive?" |
+| `cancel_order` | Customer wants to cancel an existing order | "I need to cancel my order", "Please stop my shipment" |
+| `change_address` | Customer wants to update delivery address | "Can I change my shipping address?", "Wrong address on my order" |
+
+### Returns & Refunds
+
+| Intent | Description | Example Messages |
+|--------|-------------|------------------|
+| `return_item` | Customer wants to return a product | "How do I return this?", "I want to send this back" |
+| `refund_request` | Customer is asking about a refund | "When will I get my money back?", "I need a refund" |
+
+### Product
+
+| Intent | Description | Example Messages |
+|--------|-------------|------------------|
+| `product_inquiry` | Customer asking about a product | "Does this come in size L?", "Is this item in stock?" |
+
+### Payment
+
+| Intent | Description | Example Messages |
+|--------|-------------|------------------|
+| `payment_issue` | Customer reporting a payment problem | "My card was charged twice", "Payment failed but order went through" |
+
+### Feedback
+
+| Intent | Description | Example Messages |
+|--------|-------------|------------------|
+| `complaint` | General complaint or negative feedback | "This is the worst experience", "Very disappointed" |
+| `compliment` | Positive feedback | "Your team was super helpful!", "Great service" |
+
+### Other
+
+| Intent | Description | Example Messages |
+|--------|-------------|------------------|
+| `other` | Intent does not match any known category | General inquiries, unclear messages |
+
+## API Access
+
+Retrieve the taxonomy programmatically:
+
+```bash
+curl -X GET 'https://api.usehandled.io/api/v1/ipaas/inference/taxonomy?version=1.0' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+### Response
+
+```json
+{
+  "version": "1.0",
+  "categories": [
+    {
+      "id": "order_management",
+      "name": "Order Management",
+      "intents": ["track_order", "cancel_order", "change_address"]
+    },
+    {
+      "id": "returns_refunds",
+      "name": "Returns & Refunds",
+      "intents": ["return_item", "refund_request"]
+    },
+    {
+      "id": "product",
+      "name": "Product",
+      "intents": ["product_inquiry"]
+    },
+    {
+      "id": "payment",
+      "name": "Payment",
+      "intents": ["payment_issue"]
+    },
+    {
+      "id": "feedback",
+      "name": "Feedback",
+      "intents": ["complaint", "compliment"]
+    }
+  ]
+}
+```
