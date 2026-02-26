@@ -1,0 +1,84 @@
+---
+title: "OPIC 1.0"
+description: "Operations Intent Classifier version 1.0 - Production-ready intent classification model"
+---
+
+## Overview
+
+OPIC 1.0 is the first production release of the Operations Intent Classifier. This model provides accurate multi-class intent classification specifically tuned for ecommerce customer support scenarios.
+
+## What's New in 1.0
+
+- **10 Intent Classes**: Comprehensive coverage of common ecommerce support intents
+- **Sub-60ms Latency**: Optimized for real-time inference
+- **Batch Processing**: Support for classifying multiple messages in a single request
+- **Confidence Thresholds**: Configurable filtering of low-confidence predictions
+
+## Model Specifications
+
+| Property | Value |
+|---|---|
+| Model Version | 1.0.0 |
+| Architecture | Fine-tuned BERT-based transformer |
+| Training Data | Ecommerce customer support conversations |
+| Intent Classes | 10 |
+| Max Input Length | 2,048 characters |
+| Languages | English |
+| Average Latency | < 60ms (p95) |
+
+## Supported Intents
+
+| Intent | Description |
+|---|---|
+| `track_order` | Order/shipment tracking inquiries |
+| `cancel_order` | Order cancellation requests |
+| `return_item` | Product return inquiries |
+| `refund_request` | Refund status or requests |
+| `product_inquiry` | Product questions |
+| `change_address` | Delivery address modifications |
+| `payment_issue` | Payment problems |
+| `complaint` | Negative feedback |
+| `compliment` | Positive feedback |
+| `other` | Unclassified intents |
+
+## Quick Start
+
+### Single Message Classification
+
+```bash
+curl -X POST 'https://api.usehandled.io/api/v1/ipaas/inference/intent-classify' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "message": "Where is my order?",
+    "model_version": "1.0.0"
+  }'
+```
+
+### Response
+
+```json
+{
+  "request_id": "req_abc123",
+  "message": "Where is my order?",
+  "predictions": [
+    {
+      "intent": "track_order",
+      "confidence": 0.95
+    }
+  ],
+  "top_intent": "track_order",
+  "latency_ms": 42,
+  "model_version": "1.0.0"
+}
+```
+
+## Best Practices
+
+1. **Use confidence thresholds**: Set `threshold` to filter out low-confidence predictions
+2. **Request top-k results**: Use `top_k` to get multiple intent predictions for ambiguous messages
+3. **Batch when possible**: Group multiple messages to reduce API calls
+
+## Migration Notes
+
+OPIC 1.0 is the initial release. Future versions will maintain backward compatibility with the 1.x API contract.

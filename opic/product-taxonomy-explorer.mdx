@@ -1,0 +1,72 @@
+---
+title: "Product Taxonomy Explorer"
+description: "Explore and navigate the product taxonomy classification system"
+---
+
+## Overview
+
+The Product Taxonomy Explorer allows you to browse and understand the hierarchical product classification system used across Handled integrations.
+
+## Features
+
+- Browse product categories hierarchically
+- Search for specific taxonomy nodes
+- View category mappings across different platforms
+- Export taxonomy data for integration use
+
+## Getting Started
+
+Use the Product Taxonomy Explorer to:
+
+1. **Discover Categories**: Navigate through the taxonomy tree to find appropriate product categories
+2. **Map Products**: Identify the correct taxonomy codes for your products
+3. **Cross-Platform Mapping**: See how categories translate between different ecommerce platforms
+
+## Taxonomy Structure
+
+The product taxonomy follows a hierarchical structure:
+
+```
+Root
+├── Apparel & Accessories
+│   ├── Clothing
+│   │   ├── Tops
+│   │   ├── Bottoms
+│   │   └── Outerwear
+│   └── Accessories
+├── Electronics
+│   ├── Computers
+│   └── Mobile Devices
+└── Home & Garden
+    ├── Furniture
+    └── Decor
+```
+
+## API Access
+
+You can programmatically access the taxonomy via the API:
+
+```bash
+curl -X GET 'https://api.usehandled.io/api/v1/ipaas/taxonomy/categories' \
+  -H 'Authorization: Bearer YOUR_API_TOKEN'
+```
+
+## Response Example
+
+```json
+{
+  "categories": [
+    {
+      "id": "apparel",
+      "name": "Apparel & Accessories",
+      "children": [
+        {
+          "id": "clothing",
+          "name": "Clothing",
+          "children": []
+        }
+      ]
+    }
+  ]
+}
+```

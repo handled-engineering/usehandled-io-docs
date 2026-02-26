@@ -205,6 +205,18 @@
             ]
           },
           {
+            "group": "Taxonomy",
+            "pages": [
+              "opic/product-taxonomy-explorer"
+            ]
+          },
+          {
+            "group": "Inference",
+            "pages": [
+              "opic/opic-1-0"
+            ]
+          },
+          {
             "group": "API Reference",
             "openapi": "opic-api.json"
           }
