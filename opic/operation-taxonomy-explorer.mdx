@@ -1,133 +1,261 @@
 ---
 title: "Operation Taxonomy Explorer"
-description: "Explore and navigate the OPIC operation intent taxonomy"
+description: "Explore the Handled Ecommerce Operations Taxonomy - a comprehensive classification system for logistics and brand operations"
 ---
 
 ## Overview
 
-The Operation Taxonomy Explorer allows you to browse and understand the hierarchical intent classification taxonomy used by OPIC. Select a taxonomy version and explore the tree structure to understand how customer intents are organized and classified.
+The Operation Taxonomy Explorer allows you to browse the Handled Ecommerce Operations Taxonomy, a hierarchical classification system for ecommerce and logistics operations. The taxonomy is maintained in GitHub and pulled dynamically via the API.
 
-## Using the Explorer
+<Info>
+The taxonomy tree is initially collapsed. Click on any category to expand and explore its sub-operations.
+</Info>
 
-1. **Select Taxonomy Version**: Choose the taxonomy version you want to explore from the dropdown
-2. **Explore the Tree**: Click on any node to expand and view its children
-3. **View Intent Details**: Select a leaf node to see the full intent definition and examples
+## Current Version
 
-## Interactive Explorer
+| Property | Value |
+|----------|-------|
+| Version | 2025.12.13 |
+| Total Operations | 457 |
+| Top-Level Categories | 2 |
 
-<Note>
-The taxonomy tree is initially collapsed. Click on any category to expand and explore its sub-intents.
-</Note>
+## Taxonomy Explorer
 
-### Select Version
+<AccordionGroup>
+  <Accordion title="tpl: 3PL Operations">
+    <AccordionGroup>
+      <Accordion title="tpl-01: Client Onboarding & Management">
+        - `tpl-01-001` Create Client Account
+        - `tpl-01-002` Configure Client Settings
+        - `tpl-01-003` Set Up Billing Rules
+        - `tpl-01-004` Define SLA Parameters
+        - `tpl-01-005` Map Client SKUs
+        - `tpl-01-006` Configure Shipping Rules
+        - `tpl-01-007` Setup Integration Mappings
+        - `tpl-01-008` Configure Notification Preferences
+        - `tpl-01-009` Establish Security Protocols
+        - `tpl-01-010` Define User Access Rights
+      </Accordion>
+      <Accordion title="tpl-02: Inbound & Receiving Operations">
+        - `tpl-02-001` Create ASN (Advanced Shipping Notice)
+        - `tpl-02-002` Schedule Inbound Appointment
+        - `tpl-02-003` Receive Container
+        - `tpl-02-004` Unload Shipment
+        - `tpl-02-005` Quality Inspection
+        - `tpl-02-006` Put Away Inventory
+        - `tpl-02-007` Update Client Inventory
+        - `tpl-02-009` Handle Damaged Goods
+        - `tpl-02-010` Verify Purchase Orders
+        - `tpl-02-011` Document Discrepancies
+        - `tpl-02-012` Document Blind Inbound
+      </Accordion>
+      <Accordion title="tpl-03: Order Processing & Management">
+        - `tpl-03-001` Order Processing (Create, Edit, Cancel)
+        - `tpl-03-002` Allocation Management
+        - `tpl-03-003` Wave Planning
+        - `tpl-03-004` Pick Operations
+        - `tpl-03-005` Pack Operations
+        - `tpl-03-006` Ship Operations
+        - `tpl-03-007` Order Exceptions
+      </Accordion>
+      <Accordion title="tpl-04: Inventory Management">
+        - Cycle Counting
+        - Stock Transfers
+        - Inventory Adjustments
+        - Location Management
+        - Lot/Batch Tracking
+      </Accordion>
+      <Accordion title="tpl-05: Shipping & Fulfillment">
+        - Carrier Selection
+        - Label Generation
+        - Manifest Creation
+        - Tracking Updates
+        - Delivery Confirmation
+      </Accordion>
+      <Accordion title="tpl-06: Value-Added Services">
+        - Kitting & Assembly
+        - Custom Packaging
+        - Labeling & Tagging
+        - Gift Wrapping
+        - Product Inspection
+      </Accordion>
+      <Accordion title="tpl-07: Cross-Docking & Transloading">
+        - Cross-Dock Planning
+        - Load Optimization
+        - Transfer Operations
+      </Accordion>
+      <Accordion title="tpl-08: Customer Service Operations">
+        - Returns Processing
+        - Claims Management
+        - Inquiry Handling
+      </Accordion>
+      <Accordion title="tpl-09: Financial & Billing Operations">
+        - Invoice Generation
+        - Cost Allocation
+        - Payment Processing
+      </Accordion>
+      <Accordion title="tpl-10: Reporting & Analytics">
+        - Performance Reports
+        - Inventory Reports
+        - Operational Dashboards
+      </Accordion>
+      <Accordion title="tpl-11: Compliance & Quality">
+        - Regulatory Compliance
+        - Quality Audits
+        - Documentation Management
+      </Accordion>
+      <Accordion title="tpl-12: Technology & Integration">
+        - System Integration
+        - EDI Management
+        - API Operations
+      </Accordion>
+      <Accordion title="tpl-13: Facility Management">
+        - Space Planning
+        - Equipment Maintenance
+        - Safety Operations
+      </Accordion>
+      <Accordion title="tpl-14: Workforce Management">
+        - Labor Planning
+        - Training Management
+        - Performance Tracking
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
 
-| Version | Release Date | Intents | Status |
-|---------|--------------|---------|--------|
-| 1.0 | 2024-01 | 10 | Current |
-
-### Taxonomy Tree
-
-```
-Operations Taxonomy v1.0 (click to expand)
-├── Order Management
-│   ├── track_order
-│   ├── cancel_order
-│   └── change_address
-├── Returns & Refunds
-│   ├── return_item
-│   └── refund_request
-├── Product
-│   └── product_inquiry
-├── Payment
-│   └── payment_issue
-├── Feedback
-│   ├── complaint
-│   └── compliment
-└── other
-```
-
-## Intent Definitions
-
-### Order Management
-
-| Intent | Description | Example Messages |
-|--------|-------------|------------------|
-| `track_order` | Customer wants to know shipment/delivery status | "Where is my package?", "When will my order arrive?" |
-| `cancel_order` | Customer wants to cancel an existing order | "I need to cancel my order", "Please stop my shipment" |
-| `change_address` | Customer wants to update delivery address | "Can I change my shipping address?", "Wrong address on my order" |
-
-### Returns & Refunds
-
-| Intent | Description | Example Messages |
-|--------|-------------|------------------|
-| `return_item` | Customer wants to return a product | "How do I return this?", "I want to send this back" |
-| `refund_request` | Customer is asking about a refund | "When will I get my money back?", "I need a refund" |
-
-### Product
-
-| Intent | Description | Example Messages |
-|--------|-------------|------------------|
-| `product_inquiry` | Customer asking about a product | "Does this come in size L?", "Is this item in stock?" |
-
-### Payment
-
-| Intent | Description | Example Messages |
-|--------|-------------|------------------|
-| `payment_issue` | Customer reporting a payment problem | "My card was charged twice", "Payment failed but order went through" |
-
-### Feedback
-
-| Intent | Description | Example Messages |
-|--------|-------------|------------------|
-| `complaint` | General complaint or negative feedback | "This is the worst experience", "Very disappointed" |
-| `compliment` | Positive feedback | "Your team was super helpful!", "Great service" |
-
-### Other
-
-| Intent | Description | Example Messages |
-|--------|-------------|------------------|
-| `other` | Intent does not match any known category | General inquiries, unclear messages |
+  <Accordion title="br: Brand Operations">
+    <AccordionGroup>
+      <Accordion title="br-01: Product Management">
+        - Product Creation
+        - Catalog Management
+        - Pricing Operations
+        - Product Information Management
+      </Accordion>
+      <Accordion title="br-02: Customer Experience">
+        - Customer Onboarding
+        - Loyalty Programs
+        - Personalization
+        - Customer Feedback
+      </Accordion>
+      <Accordion title="br-03: Marketing & Promotions">
+        - Campaign Management
+        - Discount & Coupon Operations
+        - Email Marketing
+        - Social Media Operations
+      </Accordion>
+      <Accordion title="br-04: Multi-Channel Operations">
+        - Marketplace Integration
+        - Channel Synchronization
+        - Inventory Allocation
+      </Accordion>
+      <Accordion title="br-05: Brand Protection">
+        - Counterfeit Prevention
+        - MAP Enforcement
+        - Authorized Seller Management
+      </Accordion>
+      <Accordion title="br-06: Order Management">
+        - Order Routing
+        - Split Shipments
+        - Order Modifications
+        - Subscription Management
+      </Accordion>
+      <Accordion title="br-07: Customer Service & Communication">
+        - Support Ticket Management
+        - Chat Operations
+        - Returns Authorization
+        - Refund Processing
+      </Accordion>
+      <Accordion title="br-08: Inventory Planning & Management">
+        - Demand Forecasting
+        - Replenishment Planning
+        - Safety Stock Management
+      </Accordion>
+      <Accordion title="br-09: Financial Operations">
+        - Revenue Recognition
+        - Tax Management
+        - Payment Operations
+      </Accordion>
+      <Accordion title="br-10: 3PL Relationship Management">
+        - Partner Onboarding
+        - SLA Monitoring
+        - Performance Reviews
+      </Accordion>
+      <Accordion title="br-11: Analytics & Reporting">
+        - Sales Analytics
+        - Customer Analytics
+        - Operational Reports
+      </Accordion>
+      <Accordion title="br-12: Compliance & Legal">
+        - Data Privacy
+        - Product Compliance
+        - Legal Documentation
+      </Accordion>
+    </AccordionGroup>
+  </Accordion>
+</AccordionGroup>
 
 ## API Access
 
-Retrieve the taxonomy programmatically:
+The taxonomy is fetched from GitHub and served via the Handled API. Retrieve the full taxonomy programmatically:
 
 ```bash
-curl -X GET 'https://api.usehandled.io/api/v1/ipaas/inference/taxonomy?version=1.0' \
+curl -X GET 'https://api.usehandled.io/api/v1/ipaas/accounts/{account_id}/handled_intent_classifier/taxonomy' \
   -H 'Authorization: Bearer YOUR_API_TOKEN'
 ```
 
-### Response
+### Response Structure
 
 ```json
 {
-  "version": "1.0",
+  "version": {
+    "version": "2025.12.13",
+    "generated": "2025-12-13T16:48:46.243Z",
+    "operationCount": 457,
+    "categoryCount": 2,
+    "attributeCount": 11
+  },
   "categories": [
     {
-      "id": "order_management",
-      "name": "Order Management",
-      "intents": ["track_order", "cancel_order", "change_address"]
+      "id": "tpl",
+      "name": "3PL Operations",
+      "children": [
+        {
+          "id": "tpl-01",
+          "name": "Client Onboarding & Management",
+          "children": [
+            {
+              "id": "tpl-01-001",
+              "name": "Create Client Account"
+            }
+          ]
+        }
+      ]
     },
     {
-      "id": "returns_refunds",
-      "name": "Returns & Refunds",
-      "intents": ["return_item", "refund_request"]
-    },
-    {
-      "id": "product",
-      "name": "Product",
-      "intents": ["product_inquiry"]
-    },
-    {
-      "id": "payment",
-      "name": "Payment",
-      "intents": ["payment_issue"]
-    },
-    {
-      "id": "feedback",
-      "name": "Feedback",
-      "intents": ["complaint", "compliment"]
+      "id": "br",
+      "name": "Brand Operations",
+      "children": [...]
     }
   ]
 }
 ```
+
+## Taxonomy Source
+
+The taxonomy is maintained in a GitHub repository and pulled dynamically:
+
+- **Repository**: `handled-engineering/ecommerce-operations-taxonomy`
+- **Path**: `dist/taxonomy.json`
+- **Caching**: Results are cached for performance with automatic refresh
+
+## Operation Code Format
+
+Operation codes follow a hierarchical naming convention:
+
+| Level | Format | Example |
+|-------|--------|---------|
+| Category | `{cat}` | `tpl` |
+| Subcategory | `{cat}-{nn}` | `tpl-01` |
+| Operation | `{cat}-{nn}-{nnn}` | `tpl-01-001` |
+| Sub-operation | `{cat}-{nn}-{nnn}-{nn}` | `tpl-03-001-02` |
+
+This structure allows for precise classification and easy navigation of operations within the taxonomy tree.
