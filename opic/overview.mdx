@@ -1,101 +1,85 @@
 ---
-title: "OPIC (Operations Intent Classifier)"
-description: "Multi-class intent classification for ecommerce customer messages"
+title: "Handled's Ecommerce Operations Taxonomy"
+description: "A standardized classification system for ecommerce and logistics operations"
 ---
 
-## Overview
+An operation category is a standard classification from Handled's Ecommerce Operations Taxonomy. All customer messages, support tickets, and operational requests can be classified against this taxonomy to enable automated routing, workflow triggers, and analytics.
 
-OPIC (Operations Intent Classifier) is an AI model that analyzes incoming customer messages and conversations to predict the underlying intent. It is designed for use in customer support pipelines, chatbots, and operational routing systems within ecommerce platforms.
+To view the full list of operation categories and subcategories, refer to the [Operation Taxonomy Explorer](/opic/operation-taxonomy-explorer).
 
-**Use cases:**
-- Automatically route support tickets to the right team
-- Trigger order management workflows based on customer messages
-- Provide real-time intent signals to live agents
-- Power chatbot response selection
+Handled's standard operation categories are used for the following purposes:
 
-## Base URL
+- **Automated ticket routing**: Route support tickets to the right team based on the classified operation type
+- **Workflow automation**: Trigger specific workflows when certain operation intents are detected
+- **Analytics and reporting**: Track operational patterns across your customer communications
+- **Integration normalization**: Standardize operation types across multiple 3PLs, channels, and systems
+- **AI-powered responses**: Power chatbot and agent assist systems with accurate intent signals
+
+An example of an operation category is `3PL Operations > Order Processing & Management > Order Processing > Cancel Order`.
+
+## How It Works
+
+When a customer message or support ticket is processed through OPIC (Operations Intent Classifier), it is classified against Handled's Ecommerce Operations Taxonomy. The classifier returns:
+
+- The most likely operation category with confidence score
+- Alternative classifications (top-k results)
+- The full taxonomy path for precise categorization
+
+This classification can then be used to automate downstream actions in your support and operations workflows.
+
+## Taxonomy Structure
+
+The taxonomy is organized hierarchically with two top-level categories:
+
+| Category | Code | Description |
+|----------|------|-------------|
+| 3PL Operations | `tpl` | Operations performed by third-party logistics providers |
+| Brand Operations | `br` | Operations performed by brands and merchants |
+
+Each top-level category contains subcategories and specific operations. For example:
 
 ```
-https://api.usehandled.io/api/v1/ipaas/inference
+3PL Operations (tpl)
+└── Order Processing & Management (tpl-03)
+    └── Order Processing (tpl-03-001)
+        └── Cancel Order (tpl-03-001-03)
 ```
 
-## Authentication
+## Getting Started
 
-All requests require a Bearer token:
+1. **Review the taxonomy**: Explore the [Operation Taxonomy Explorer](/opic/operation-taxonomy-explorer) to understand the available operation categories
+2. **Integrate the classifier**: Use the OPIC API to classify incoming messages against the taxonomy
+3. **Build automations**: Create workflows that trigger based on classified operation types
+4. **Monitor and refine**: Use analytics to track classification patterns and optimize your operations
 
-```
-Authorization: Bearer YOUR_API_TOKEN
-```
+## Considerations
 
-## Supported Intents
+When using Handled's Operations Taxonomy:
 
-| Intent Label | Description | Example Message |
-|---|---|---|
-| `track_order` | Customer wants to know shipment/delivery status | "Where is my package?" |
-| `cancel_order` | Customer wants to cancel an existing order | "I need to cancel my order ASAP" |
-| `return_item` | Customer wants to return a product | "How do I return this item?" |
-| `refund_request` | Customer is asking about a refund | "When will I get my money back?" |
-| `product_inquiry` | Customer asking about a product | "Does this come in size L?" |
-| `change_address` | Customer wants to update delivery address | "Can I change my shipping address?" |
-| `payment_issue` | Customer reporting a payment problem | "My card was charged twice" |
-| `complaint` | General complaint or negative feedback | "This is the worst experience ever" |
-| `compliment` | Positive feedback | "Your team was super helpful!" |
-| `other` | Intent does not match any known category | — |
+- **Choose the most specific category**: Select the operation category that best describes the primary intent. For example, if a customer wants to cancel an order and also asks about a refund, classify based on the primary action (cancel order)
+- **Handle multi-intent messages**: Some messages may contain multiple intents. Use the `top_k` parameter to get multiple classifications
+- **Set confidence thresholds**: Use the `threshold` parameter to filter out low-confidence predictions
+- **Fallback handling**: Messages that don't match any category are classified as `other`. Implement fallback logic for these cases
 
-## Example Request
+## Taxonomy Versioning
 
-```bash
-curl -X POST 'https://api.usehandled.io/api/v1/ipaas/inference/intent-classify' \
-  -H 'Authorization: Bearer YOUR_API_TOKEN' \
-  -H 'Content-Type: application/json' \
-  -d '{
-    "message": "I placed an order yesterday but I want to cancel it now",
-    "top_k": 3,
-    "threshold": 0.05
-  }'
-```
-
-## Example Response
-
-```json
-{
-  "request_id": "req_a1b2c3d4",
-  "message": "I placed an order yesterday but I want to cancel it now",
-  "predictions": [
-    {
-      "intent": "cancel_order",
-      "confidence": 0.91
-    },
-    {
-      "intent": "track_order",
-      "confidence": 0.06
-    },
-    {
-      "intent": "refund_request",
-      "confidence": 0.02
-    }
-  ],
-  "top_intent": "cancel_order",
-  "latency_ms": 48,
-  "model_version": "1.0.0"
-}
-```
-
-## Model Details
+The taxonomy is versioned and maintained in a central repository. The current version includes:
 
 | Property | Value |
-|---|---|
-| Architecture | Fine-tuned transformer (BERT-based) |
-| Training data | Ecommerce customer support conversations |
-| Number of intent classes | 10 |
-| Max input length | 2,048 characters |
-| Supported languages | English |
-| Average latency | < 60ms (p95) |
+|----------|-------|
+| Version | 2025.12.13 |
+| Total Operations | 457 |
+| Top-Level Categories | 2 |
 
-## Rate Limits
+Updates to the taxonomy are published periodically. Your integration will automatically use the latest version unless you specify a particular version.
 
-| Plan | Requests / minute | Batch size limit |
-|---|---|---|
-| Starter | 60 | 10 |
-| Growth | 300 | 50 |
-| Enterprise | Unlimited | 100 |
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Taxonomy Explorer" icon="sitemap" href="/opic/operation-taxonomy-explorer">
+    Browse the full operation taxonomy tree
+  </Card>
+  <Card title="OPIC 1.0" icon="brain" href="/opic/opic-1-0">
+    Learn about the intent classification model
+  </Card>
+</CardGroup>
